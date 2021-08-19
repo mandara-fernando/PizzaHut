@@ -1,0 +1,13 @@
+.form-titles{
+    font-family:sans-serif;
+    text-transform:uppercase;
+    letter-spacing:3pt;
+    font-size: 25px;
+    line-height:1.6em;
+    font-weight: bolder;
+    justify-content: center;
+}
+
+.divide{
+    border-bottom: 3px solid #150303;
+}
