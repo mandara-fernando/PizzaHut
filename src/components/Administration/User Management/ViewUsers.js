@@ -1,99 +1,93 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from '@material-ui/core';
-import Modal from './Modal';
-
+import { Avatar, Button, IconButton, Tooltip } from "@material-ui/core";
+import Modal from "./Modal";
+import "../../../stylesheets/formTitle.css";
+import { Card, Container, Table } from "react-bootstrap";
+import {
+  FaEdit,
+  FaEye,
+  FaTrash,
+  IoMdAddCircleOutline,
+  MdEmail,
+} from "react-icons/all";
 function ViewUsers(props) {
-
-  const [showPop,setShowPop] = useState(false);
-  const openPop = () =>{
-      setShowPop(prev => !prev)}
-  return <main >
-        
-  <div class='body' align='center' style={{ marginTop: "80px" }} >
-    <div class='card' style={{ backgroundColor: "white", width: "1250px", height:'auto' }}>
-    <h1 className="form-titles ">USER MANAGEMENT</h1>
-    <Button
-          
-              class='btn btn-danger'
-              /*to={`/admin/usermanagement/deletemembers/${item._id}`}*/
+  const [showPop, setShowPop] = useState(false);
+  const openPop = () => {
+    setShowPop((prev) => !prev);
+  };
+  return (
+    <div>
+      <Container className={"pt-3"}>
+        <Card className={"p-5 mb-3"}>
+          <div className="text-center mb-2">
+            <h1 className="form-titles ">USER MANAGEMENT</h1>
+            <hr className="divide" />
+          </div>
+          <div>
+            <Table
+              striped
+              bordered
+              hover
+              variant="dark"
+              className={"text-center"}
             >
-              <i class='fa fa-plus'></i> Add User
-    </Button>
-    
-    <br/>
-
-  <table class='table'>
-    <thead class='thead-dark'>
-      <tr class='table-success'>
-        <th scope='col'>Profile</th>
-        <th></th>
-        <th scope='col'>User Name</th>
-        <th scope='col'>Role</th>
-        <th scope='col'>Remove</th>
-        <th scope='col'>Edit</th>
-        <th scope='col'>Contact</th>
-      </tr>
-    </thead>
-    <tbody>
-      
-        <tr>
-          <td>
-          
-          </td>
-          <td></td>
-          <td style={{ paddingTop: "30px" }}>
-          
-          </td>
-          <td >
-          <div className="form-group">
-                  
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
-                           >
-                  <option selected>Select the category</option>
-                  <option value="Research">Research</option>
-                  <option value="Workshop">Workshop</option>
-                  </select>
-                  
-              </div>
-          </td>
-          <td >
-          <Button
-              onClick={openPop}
-              class='btn btn-danger'
-              /*to={`/admin/usermanagement/deletemembers/${item._id}`}*/
-            >
-              <i class='fa fa-trash'></i> delete
-            </Button>
-            <Modal showPop={showPop} setShowPop={setShowPop}/>
-            <globalStyle/>
-          </td>
-          <td>
-          <Link
-    
-              class='btn btn'
-              /*to={`/admin/usermanagement/editmembers/${item._id}`}*/
-            >
-            <i class="fa fa-edit" style={{fontSize:'28px',color:'red'}}></i>
-            </Link>
-          </td>
-          <td>
-          <Link
-    
-              class='btn btn'
-              /*to={`/admin/usermanagement/editmembers/${item._id}`}*/
-            >
-            <i class="fa fa-envelope" style={{fontSize:'28px',color:'red'}}></i>
-            </Link>
-          </td>
-
-        </tr>
-     
-    </tbody>
-  </table>
-</div>
-</div>
-</main>;
+              <thead>
+                <tr>
+                  <th className={"table-data"}>Profile</th>
+                  <th className={"table-data"}>User Name</th>
+                  <th className={"table-data"}>Role</th>
+                  <th>
+                    <Tooltip title="Add" placement="top">
+                      <IconButton aria-label="delete" href={"/admin/add-user"}>
+                        <IoMdAddCircleOutline color={"white"} />
+                      </IconButton>
+                    </Tooltip>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className={"table-data"}>
+                    <Avatar
+                      alt="Remy Sharp"
+                      src="/static/images/avatar/1.jpg"
+                      className={"table-avatar"}
+                    />
+                  </td>
+                  <td className={"table-data"}>Sandaruwan</td>
+                  <td className={"table-data"}>Admin</td>
+                  <td>
+                    {" "}
+                    <Tooltip
+                      title="Edit"
+                      className="table-icon"
+                      style={{
+                        color: "red",
+                      }}
+                    >
+                      <Link to={"/admin/update-user"}>
+                        <FaEdit color={"white"} />
+                      </Link>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                      <FaTrash className="table-icon" />
+                    </Tooltip>
+                    <Tooltip title="View">
+                      <FaEye className="table-icon" />
+                    </Tooltip>
+                    <Tooltip title="Contact">
+                      <MdEmail className="table-icon" href={"/"} />
+                    </Tooltip>
+                  </td>
+                </tr>
+              </tbody>
+            </Table>
+          </div>
+        </Card>
+      </Container>
+    </div>
+  );
 }
 
 export default ViewUsers;
