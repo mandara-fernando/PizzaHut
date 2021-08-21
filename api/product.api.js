@@ -1,10 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/product.controller');
+const multer=require('multer');
 
+const FileStorage=multer.diskStorage({
+    destination:(req,file,callback)=>{
+        callback(null,'./product_images');
+    },
+    filename:(req,file,callback)=>{
+        callback(null,file.originalname);
+    }
+})
+const upload=multer({storage:FileStorage});
 
-// Add product api
-router.post('/add', controller.addProduct);
+// Add  product
+router.post('/add',upload.single('file'),controller.addProduct);
 
 // Get all products
 router.get('/', controller.getProducts);

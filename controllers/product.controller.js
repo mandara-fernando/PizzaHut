@@ -6,10 +6,16 @@ const Product = require('../models/product.model');
 const addProduct = async (req, res) => {
     if (req.body) {
 
-        const product = new Product(req.body);
+        const product = new Product({
+            title:req.body.title,
+            description:req.body.description,
+            image:req.file.originalname,
+            prices:req.body.prices,
+            status:req.body.status
+        });
         try {
             const newProduct = await product.save();
-            res.status(200).json(newProduct);
+            res.status(201).json(newProduct);
         } catch (err) {
             res.status(400).json({message: err.message})
         }
