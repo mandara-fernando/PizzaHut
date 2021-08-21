@@ -31,6 +31,11 @@ const productSchema = new mongoose.Schema({
             required: false,
             type: Number,
             trim: true
+        },
+        regular: {
+            required: required,
+            type: Number,
+            trim: true
         }
     },
     status: {

@@ -11,10 +11,12 @@ const FileStorage=multer.diskStorage({
         callback(null,file.originalname);
     }
 })
+
 const upload=multer({storage:FileStorage});
 
 // Add  product
 router.post('/add',upload.single('file'),controller.addProduct);
+
 
 // Get all products
 router.get('/', controller.getProducts);
@@ -22,6 +24,7 @@ router.get('/', controller.getProducts);
 
 // Update products details
 router.patch('/edit/:id', controller.updateProductsDetails);
+
 
 // Remove a products
 router.delete('/remove/:id', controller.removeProduct);
