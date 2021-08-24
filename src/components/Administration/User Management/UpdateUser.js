@@ -1,12 +1,43 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Button } from "@material-ui/core";
 import { Card, Container, Form, Table } from "react-bootstrap";
-import { ImExit } from "react-icons/all";
+import { GiRollingEnergy, ImExit } from "react-icons/all";
 import "../../../stylesheets/formTitle.css";
+import { useParams } from "react-router";
+import axios from "axios";
 import { Link } from "react-router-dom";
+
 function UpdateUser(props) {
+
   const [imgPreview, setimgPreview] = useState(null);
   const [error, setError] = useState(false);
+  const { id } = useParams();
+
+  const [FirstName, setFirstName] = useState("");
+  const [LastName, setLastName] = useState("");
+  const [Email, setEmail] = useState("");
+  const [Contact, setContact] = useState("");
+  const [Role, setRole] = useState("");
+  const [Profile, setProfile] = useState("");
+
+  useEffect(() => {
+    axios
+    .get(`http://localhost:8070/api/user-management/display/${id}`)
+    .then((response) => {
+      setFirstName(response.data.UserManagement.FirstName)
+      setLastName(response.data.UserManagement.LastName)
+      setEmail(response.data.UserManagement.Email)
+      setContact(response.data.UserManagement.Contact)
+      setRole(response.data.UserManagement.Role)
+      setProfile(response.data.UserManagement.Profile)
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+  },[]);
+
+
+
 
   const handleImageChange = (e) => {
     setError(false);
@@ -17,6 +48,7 @@ function UpdateUser(props) {
       reader.onloadend = () => {
         setimgPreview(reader.result);
       };
+      setProfile(e.target.files[0]);
       reader.readAsDataURL(selected);
     } else {
       setError(true);
@@ -24,6 +56,37 @@ function UpdateUser(props) {
       alert("file not supported");
     }
   };
+
+  function sendData(e) {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("FirstName", FirstName);
+    formData.append("LastName", LastName);
+    formData.append("Email", Email);
+    formData.append("Contact", Contact);
+    formData.append("Role", Role);
+    formData.append("Profile", Profile);
+
+console.log(formData);
+
+
+    axios
+      .put(`http://localhost:8070/api/user-management/updates/${id}`, formData)
+      .then((response) => {
+        console.log("Success");
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }
+
+
+
+
+
+
+  
   return (
     <div>
       <Container className={"pt-3"}>
@@ -38,14 +101,15 @@ function UpdateUser(props) {
             <hr className="divide" />
           </div>
 
-          <Form>
+          <Form onSubmit={sendData}>
             <Form.Group className="mb-3" controlId="FirstName">
               <Form.Label>First Name</Form.Label>
               <Form.Control
                 name="First Name"
-                onChange={(event) => {
-                  // setCTitle(event.target.value);
-                }}
+                defaultValue={FirstName}
+                onChange={(e) => {
+                        setFirstName(e.target.value);
+                      }}
                 type="text"
                 placeholder="First Name"
               />
@@ -55,9 +119,10 @@ function UpdateUser(props) {
               <Form.Label>Last Name</Form.Label>
               <Form.Control
                 name="Last Name"
-                onChange={(event) => {
-                  // setVenue(event.target.value);
-                }}
+                defaultValue={LastName}
+                onChange={(e) => {
+                        setLastName(e.target.value);
+                      }}
                 type="text"
                 placeholder="Last Name"
               />
@@ -67,9 +132,10 @@ function UpdateUser(props) {
               <Form.Label>Email</Form.Label>
               <Form.Control
                 name="Email"
-                onChange={(event) => {
-                  // setSeats(event.target.value);
-                }}
+                defaultValue={Email}
+                onChange={(e) => {
+                        setEmail(e.target.value);
+                      }}
                 type="email"
                 placeholder="Email"
               />
@@ -96,19 +162,24 @@ function UpdateUser(props) {
               <select
                 className="form-select form-select-lg mb-3 dropdown"
                 aria-label=".form-select-lg example"
+                value={Role}
+                onChange={(e) => {
+                        setRole(e.target.value);
+                      }}
               >
-                <option selected>Admin</option>
-                <option value="Research">Manager</option>
-                <option value="Workshop">Product Manage</option>
+                <option selected>Select</option>
+                <option value="Admin">Admin</option>
+                <option value="ProductManage">Product Manage</option>
               </select>
             </div>
             <Form.Group className="mb-3" controlId="Contact">
               <Form.Label>Contact Number</Form.Label>
               <Form.Control
                 name="Contact"
-                onChange={(event) => {
-                  // setResearcherFee(event.target.value);
-                }}
+                defaultValue={Contact}
+                onChange={(e) => {
+                        setContact(e.target.value);
+                      }}
                 type="string"
                 placeholder="Contact Number"
               />
@@ -139,16 +210,16 @@ function UpdateUser(props) {
                   <span>(jpg, jpeg 0r png)</span>
                 </>
               )}
+              
             </div>
+
             {imgPreview && (
+              
               <Button onClick={() => setimgPreview(null)}>Remove Image</Button>
             )}
             <br />
 
             <Button
-              onClick={(event) => {
-                // sendData(event); // sendData(event);
-              }}
               type="submit"
               fullWidth
               variant="contained"

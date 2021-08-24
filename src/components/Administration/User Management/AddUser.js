@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Button } from "@material-ui/core";
 import { Card, Container, Form, Table } from "react-bootstrap";
 import "../../../stylesheets/formTitle.css";
@@ -7,6 +8,17 @@ import "../../../stylesheets/AddUser.css";
 function AddUser(props) {
   const [imgPreview, setimgPreview] = useState(null);
   const [error, setError] = useState(false);
+
+
+  const [FirstName, setFirstName] = useState("");
+  const [LastName, setLastName] = useState("");
+  const [Email, setEmail] = useState("");
+  const [Contact, setContact] = useState("");
+  const [Password, setPassword] = useState("");
+  const [Role, setRole] = useState("");
+  const [Profile, setProfile] = useState("");
+
+
 
   const handleImageChange = (e) => {
     setError(false);
@@ -17,6 +29,7 @@ function AddUser(props) {
       reader.onloadend = () => {
         setimgPreview(reader.result);
       };
+      setProfile(e.target.files[0]);
       reader.readAsDataURL(selected);
     } else {
       setError(true);
@@ -24,6 +37,35 @@ function AddUser(props) {
       alert("file not supported");
     }
   };
+
+
+
+  function sendData(e) {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("FirstName", FirstName);
+    formData.append("LastName", LastName);
+    formData.append("Email", Email);
+    formData.append("Contact", Contact);
+    formData.append("Password", Password);
+    formData.append("Role", Role);
+    formData.append("Profile", Profile);
+
+    axios
+      .post("http://localhost:8070/api/user-management", formData)
+      .then((response) => {
+      
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }
+
+
+
+
+
   return (
     <div>
       <Container className={"pt-3"}>
@@ -33,14 +75,14 @@ function AddUser(props) {
             <hr className="divide" />
           </div>
 
-          <Form>
+          <Form  onSubmit={sendData}>
             <Form.Group className="mb-3" controlId="FirstName">
               <Form.Label>First Name</Form.Label>
               <Form.Control
                 name="First Name"
-                onChange={(event) => {
-                  // setCTitle(event.target.value);
-                }}
+                onChange={(e) => {
+                        setFirstName(e.target.value);
+                      }}
                 type="text"
                 placeholder="First Name"
               />
@@ -50,9 +92,9 @@ function AddUser(props) {
               <Form.Label>Last Name</Form.Label>
               <Form.Control
                 name="Last Name"
-                onChange={(event) => {
-                  // setVenue(event.target.value);
-                }}
+                onChange={(e) => {
+                        setLastName(e.target.value);
+                      }}
                 type="text"
                 placeholder="Last Name"
               />
@@ -62,9 +104,9 @@ function AddUser(props) {
               <Form.Label>Email</Form.Label>
               <Form.Control
                 name="Email"
-                onChange={(event) => {
-                  // setSeats(event.target.value);
-                }}
+                onChange={(e) => {
+                        setEmail(e.target.value);
+                      }}
                 type="email"
                 placeholder="sandaruwan@gmail.com"
               />
@@ -74,21 +116,36 @@ function AddUser(props) {
               <select
                 class="form-select form-select-lg mb-3 dropdown "
                 aria-label=".form-select-lg example"
+                onChange={(e) => {
+                        setRole(e.target.value);
+                      }}
               >
                 <option selected>Select the category</option>
-                <option value="Research">Research</option>
-                <option value="Workshop">Workshop</option>
+                <option value="Admin">Admin</option>
+                <option value="DeliveryManager">Delivery Manager</option>
               </select>
             </div>
             <Form.Group className="mb-3" controlId="Contact">
               <Form.Label>Contact Number</Form.Label>
               <Form.Control
                 name="Contact"
-                onChange={(event) => {
-                  // setResearcherFee(event.target.value);
-                }}
+                onChange={(e) => {
+                        setContact(e.target.value);
+                      }}
                 type="number"
                 placeholder="+97778341425"
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="Contact">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                name="Password"
+                onChange={(e) => {
+                        setPassword(e.target.value);
+                      }}
+                type="text"
+                placeholder="**********"
               />
             </Form.Group>
 
@@ -113,6 +170,7 @@ function AddUser(props) {
                     type="file"
                     id="fileUpload"
                     onChange={handleImageChange}
+                    
                   />
                   <span>(jpg, jpeg 0r png)</span>
                 </>
@@ -124,9 +182,6 @@ function AddUser(props) {
             <br />
 
             <Button
-              onClick={(event) => {
-                // sendData(event); // sendData(event);
-              }}
               type="submit"
               fullWidth
               variant="contained"
