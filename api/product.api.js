@@ -5,7 +5,7 @@ const multer=require('multer');
 
 const FileStorage=multer.diskStorage({
     destination:(req,file,callback)=>{
-        callback(null,'./product_images');
+        callback(null,'../frontend/public/images');
     },
     filename:(req,file,callback)=>{
         callback(null,file.originalname);
@@ -29,5 +29,8 @@ router.patch('/edit/:id', controller.updateProductsDetails);
 // Remove a products
 router.delete('/remove/:id', controller.removeProduct);
 
+
+//Filter by products
+router.get('/filter/:status',controller.FilterByCategory);
 
 module.exports = router;

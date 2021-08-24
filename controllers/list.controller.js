@@ -1,4 +1,4 @@
-const List = require('../models/list.api');
+const List = require('../models/list.model');
 
 // Add  a  new list
 
