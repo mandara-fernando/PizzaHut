@@ -7,18 +7,13 @@ import AdminSideBar from "./components/Administration/Admin Navigation/AdminSide
 import AdminRoutes from "./routes/AdminRoutes";
 import UserRoutes from "./routes/UserRoutes";
 
-axios.defaults.withCredentials= true;
+axios.defaults.withCredentials = true;
 
 function App() {
-  
-
   return (
     <div>
       <Router>
         <AllNav />
-        <Switch>
-          <UserRoutes />
-        </Switch>
       </Router>
     </div>
   );
