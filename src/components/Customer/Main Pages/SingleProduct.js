@@ -80,7 +80,7 @@ const SingleProduct = (props) => {
         </div>
       </Card>
       <Modal show={model} onHide={handleClose} animation={true}>
-        <Modal.Header>
+        <Modal.Header className={"d-flex justify-content-center"}>
           <Modal.Title>Add to Cart</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -94,7 +94,14 @@ const SingleProduct = (props) => {
             />
           </Form.Group>
           <div className={"d-flex justify-content-center pt-3"}>
-            <Button onClick={increamentCount}>+</Button>
+            <Button
+              style={{
+                color: "#c92e31",
+              }}
+              onClick={increamentCount}
+            >
+              +
+            </Button>
             <span
               className={"p-2"}
               style={{
@@ -106,11 +113,18 @@ const SingleProduct = (props) => {
             >
               {count}
             </span>
-            <Button onClick={decreamentCount}>-</Button>
+            <Button
+              style={{
+                color: "#c92e31",
+              }}
+              onClick={decreamentCount}
+            >
+              -
+            </Button>
             <br />
           </div>
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer className={"d-flex justify-content-center"}>
           <Button
             variant="primary"
             startIcon={<MdAddShoppingCart />}
