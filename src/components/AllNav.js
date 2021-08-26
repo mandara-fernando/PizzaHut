@@ -1,15 +1,15 @@
 import AdminPanel from "./Administration/AdminPanel";
 import Home from "./Customer/Main Pages/Home";
 import Login from "./Authentications/Login";
+import CustomerDashboard from "./Customer/CustomerDashboard";
 
 function AllNav() {
-
-  const role =  localStorage.getItem("user");
+  const role = localStorage.getItem("user");
 
   if (role === "Admin") {
     return <AdminPanel />;
   } else {
-    return <Home />;
+    return <CustomerDashboard />;
   }
 }
 
