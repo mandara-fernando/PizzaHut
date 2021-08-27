@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import {
   Container,
   Form,
@@ -36,7 +37,15 @@ function CustomerNavbar(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  useEffect(() => {
+    axios.get("http://localhost:8070/carts").then((res) => {
 
+        localStorage.setItem("count", res.data.length);
+
+    }).catch((err) => {
+        console.log("err=>" + err);
+    });
+}, [6]);
   function Logout() {
     axios
       .get("http://localhost:8070/auth/logout")
@@ -102,11 +111,12 @@ function CustomerNavbar(props) {
           </Form>
 
           <div>
-            <Badge color="secondary">
+            <Badge badgeContent={localStorage.getItem("count")} color="secondary">
               <ShoppingCart
                 style={{
                   color: "white",
                 }}
+                onClick={() => (window.location.href = "/cart")}
                 className={"menu-icons"}
                 fontSize={"large"}
               />
