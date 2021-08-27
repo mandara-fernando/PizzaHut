@@ -1,194 +1,280 @@
-import React, { useState } from "react";
-import { Button } from "@material-ui/core";
-import { Card, Container, Form, Row, Col, Dropdown } from "react-bootstrap";
-import "../../../stylesheets/formTitle.css";
+import React, {useState} from 'react'
+import {Button} from "@material-ui/core";
+import {
+    Card,
+    Container,
+    Form,
+    Row,
+    Col,
+    Dropdown
+} from "react-bootstrap";
+import Select from 'react-select';
+import axios from 'axios';
+
 function AddProduct(props) {
-  const [imgPreview, setimgPreview] = useState(null);
-  const [error, setError] = useState(false);
+    const [imgPreview, setimgPreview] = useState(null);
+    const [error, setError] = useState(false);
+    const [Small, setSmall] = useState(0);
+    const [Regular, setRegular] = useState(0);
+    const [Large, setLarge] = useState(0);
+    const [Medium, setMedium] = useState(0);
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [topping, setTopping] = useState('');
+    const [status, setStatus] = useState('');
+    const [image, setImage] = useState([]);
+    const [validated, setValidated] = useState(false);
 
-  const handleImageChange = (e) => {
-    setError(false);
-    const selected = e.target.files[0];
-    const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/jpg"];
-    if (selected && ALLOWED_TYPES.includes(selected.type)) {
-      let reader = new FileReader();
-      reader.onloadend = () => {
-        setimgPreview(reader.result);
-      };
-      reader.readAsDataURL(selected);
-    } else {
-      setError(true);
 
-      alert("file not supported");
+    const categories = [
+        {
+            value: 'thin crust',
+            label: 'thin crust'
+        }, {
+            value: 'favorite',
+            label: 'favorite'
+        }, {
+            value: 'signature',
+            label: 'signature'
+        }, {
+            value: 'classic',
+            label: 'classic'
+        }
+    ]
+
+    const options = [
+        {
+            value: 'list1',
+            label: 'list1'
+        }, {
+            value: 'list2',
+            label: 'list2'
+        }, {
+            value: 'list3',
+            label: 'list3'
+        }
+    ]
+
+    const handleImageChange = (e) => {
+        setImage(e.target.files[0]);
+        console.log(image)
+    };
+
+    const onChange = (e) => {
+        const txt = document.getElementById([e.target.name]);
+        txt.disabled = e.target.checked ? false : true;
+        if (! txt.disabled) {
+            txt.focus();
+        }
     }
-  };
-  return (
-    <div>
-      <Container className={"pt-3"}>
-        <Card className={"p-5 mb-3"}>
-          <div className="text-center mb-2">
-            <h1 className="form-titles ">ADD PRODUCTS</h1>
-            <hr className="divide" />
-          </div>
 
-          <Form>
-            <Form.Group className="mb-3" controlId="ConferenceTitle">
-              <Form.Label>Promotion ID</Form.Label>
-              <Form.Control
-                name="ConferenceTitle"
-                onChange={(event) => {
-                  // setCTitle(event.target.value);
-                }}
-                type="text"
-                placeholder="Promotion ID"
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="Description">
-              <Form.Label>Title</Form.Label>
-              <Form.Control
-                name="Description"
-                onChange={(event) => {
-                  // setDescription(event.target.value);
-                }}
-                type="text"
-                placeholder="Title"
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="Description">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                name="Description"
-                onChange={(event) => {
-                  // setDescription(event.target.value);
-                }}
-                as="textarea"
-                rows={3}
-              />
-            </Form.Group>
+    const submitDetails = (e) => {
+        const form = e.currentTarget;
+        if (form.checkValidity() === false) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
 
-            {error && <p className="errorMsg">File not supported</p>}
-            <div
-              className="imgPreview"
-              style={{
-                background: imgPreview
-                  ? `url("${imgPreview}") no-repeat center/cover`
-                  : "#131313",
-              }}
-            >
-              {!imgPreview && (
+        setValidated(true);
+        const data = new FormData();
+        data.append('title', title);
+        data.append('description', description);
+        data.append('file', image);
+        data.append('small', Small);
+        data.append('medium', Medium);
+        data.append('large', Large);
+        data.append('regular', Regular);
+        data.append('status', status);
+        console.log(status);
+        console.log(image);
+        axios.post("http://localhost:8070/products/add", data).then((res) => {
+            alert("data successfully inserted!!!");
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+
+    return <div>
+        <Container className={"pt-3"}>
+
+            <Card className={"p-5 mb-3"}>
+                <div className="text-center mb-2">
+                    <h1 className="form-titles ">ADD PRODUCTS</h1>
+                    <hr className="divide"/>
+                </div>
+
+                <Form noValidate
+                    validated={validated}
+                    onSubmit={submitDetails}>
+
+                    <Form.Group className="mb-3" controlId="title">
+                        <Form.Label>Title</Form.Label>
+                        <Form.Control required name="title" type="text" placeholder="Title"
+                            onChange={
+                                (e) => {
+                                    setTitle(e.target.value);
+                                }
+                            }/>
+                        <Form.Control.Feedback>Looks Good!</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="Description">
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control name="description" as="textarea"
+                            rows={3}
+                            required
+                            onChange={
+                                (e) => {
+                                    setDescription(e.target.value);
+                                }
+                            }/>
+                    </Form.Group>
+
                 <>
-                  <p>Add an image</p>
-                  <label htmlFor="fileUpload" className="customeFileUplad">
-                    Choose File
-                  </label>
-                  <input
-                    type="file"
-                    id="fileUpload"
-                    onChange={handleImageChange}
-                  />
-                  <span>(jpg, jpeg 0r png)</span>
+                    <p>Add an image</p>
+                    <label htmlFor="fileUpload" className="customeFileUplad">
+                        Choose File
+                    </label>
+                    <input class="form-control" type="file" id="fileUpload"
+                        onChange={handleImageChange}
+                        multiple
+                        required/>
+                    <span>(jpg, jpeg 0r png)</span>
                 </>
-              )}
-            </div>
-            {imgPreview && (
-              <button onClick={() => setimgPreview(null)}>Remove Image</button>
-            )}
-            <br />
 
-            <Row className="mb-3 display-inline">
-              <Form.Group as={Col}>
-                <Form.Check type="checkbox" label="Small" />
-              </Form.Group>
+                <br/>
 
-              <Form.Group as={Col}>
+                <Row className="mb-3">
+                    <Form.Group as={Col}
+                        controlId="formGridEmail">
+
+                        <Form.Check type="checkbox" label="Small" name="Small"
+                            onChange={onChange}/>
+                    </Form.Group>
+
+                    <Form.Group as={Col}
+                        controlId="formGridPassword">
+                        <Form.Label>Price</Form.Label>
+                        <Form.Control type="text" id="Small" name="Small" placeholder="Price"
+                            disabled={true}
+                            onChange={
+                                (e) => {
+                                    setSmall(e.target.value);
+                                    console.log(Small)
+                                }
+                            }
+                            required/>
+                    </Form.Group>
+            </Row>
+
+            <Row className="mb-3">
+                <Form.Group as={Col}
+                    controlId="formGridEmail">
+
+                    <Form.Check type="checkbox" label="Medium" name="Medium"
+                        onChange={onChange}/>
+                </Form.Group>
+
+                <Form.Group as={Col}
+                    controlId="formGridPassword">
+                    <Form.Label>Price</Form.Label>
+                    <Form.Control type="text" id="Medium" name="Medium" placeholder="Price"
+                        disabled={true}
+                        onChange={
+                            (e) => {
+                                setMedium(e.target.value);
+                                console.log(Medium)
+                            }
+                        }
+                        required/>
+                </Form.Group>
+        </Row>
+
+        <Row className="mb-3">
+            <Form.Group as={Col}
+                controlId="formGridEmail">
+
+                <Form.Check type="checkbox" label="Large" name="Large"
+                    onChange={onChange}/>
+            </Form.Group>
+
+            <Form.Group as={Col}
+                controlId="formGridPassword">
                 <Form.Label>Price</Form.Label>
-                <Form.Control type="text" placeholder="Price" />
-              </Form.Group>
-            </Row>
+                <Form.Control type="text" id="Large" name="Large" placeholder="Price"
+                    disabled={true}
+                    onChange={
+                        (e) => {
+                            setLarge(e.target.value);
+                            console.log(Large)
+                        }
+                    }
+                    required/>
+            </Form.Group>
+    </Row>
 
-            <Row className="mb-3">
-              <Form.Group as={Col}>
-                <Form.Check type="checkbox" label="Medium" />
-              </Form.Group>
+    <Row className="mb-3">
+        <Form.Group as={Col}
+            controlId="formGridEmail">
 
-              <Form.Group as={Col} controlId="formGridPassword">
-                <Form.Label>Price</Form.Label>
-                <Form.Control type="text" placeholder="Price" />
-              </Form.Group>
-            </Row>
+            <Form.Check type="checkbox" label="Regular" name="Regular"
+                onChange={onChange}
+                checked={true}/>
+        </Form.Group>
 
-            <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridEmail">
-                <Form.Check type="checkbox" label="Large" />
-              </Form.Group>
+        <Form.Group as={Col}
+            controlId="formGridPassword">
+            <Form.Label>Price</Form.Label>
+            <Form.Control type="text" id="Regular" name="Regular" placeholder="Price"
+                onChange={
+                    (e) => {
+                        setRegular(e.target.value);
+                    }
+                }
+                required/>
+        </Form.Group>
+</Row>
 
-              <Form.Group as={Col} controlId="formGridPassword">
-                <Form.Label>Price</Form.Label>
-                <Form.Control type="text" placeholder="Price" />
-              </Form.Group>
-            </Row>
 
-            <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridEmail">
-                <Form.Check type="checkbox" label="Regular" />
-              </Form.Group>
+<Row className="mb-3">
 
-              <Form.Group as={Col} controlId="formGridPassword">
-                <Form.Label>Price</Form.Label>
-                <Form.Control type="text" placeholder="Price" />
-              </Form.Group>
-            </Row>
+    <Form.Group as={Col}
+        controlId="formGridState">
+        <Form.Label>Add topings(Optional)</Form.Label>
+    </Form.Group>
 
-            <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridState">
-                <Form.Label>Add topings(Optional)</Form.Label>
-              </Form.Group>
+    <div className="form-group">
 
-              <div className="form-group">
-                <select
-                  class="form-select form-select-lg mb-3"
-                  aria-label=".form-select-lg example"
-                >
-                  <option selected>Select the category</option>
-                  <option value="Research">Research</option>
-                  <option value="Workshop">Workshop</option>
-                </select>
-              </div>
-            </Row>
+        <Select options={options}
+            onChange={
+                (e) => {
+                    setTopping(topping);
+                }
+            }
+            required/>
+    </div></Row><Row className="mb-3">
 
-            <Row className="mb-3">
-              <Form.Group as={Col} controlId="formGridState">
-                <Form.Label>Status</Form.Label>
-              </Form.Group>
+<Form.Group as={Col}
+    controlId="formGridState">
+    <Form.Label>Status</Form.Label>
+</Form.Group>
 
-              <div className="form-group">
-                <select
-                  class="form-select form-select-lg mb-3"
-                  aria-label=".form-select-lg example"
-                >
-                  <option selected>Select the category</option>
-                  <option value="Research">Research</option>
-                  <option value="Workshop">Workshop</option>
-                </select>
-              </div>
-            </Row>
+<div className="form-group">
+    <Select required aria-label=".form-select-lg example"
+        options={categories}
+        onChange={
+            (e) => {
+                setStatus(e.value);
+            }
+        }/>
 
-            <Button
-              onClick={(event) => {
-                // sendData(event); // sendData(event);
-              }}
-              type="submit"
-              fullWidth
-              variant="contained"
-              style={{ backgroundColor: "#d00000", color: "#FFF" }}
-            >
-              Submit
-            </Button>
-          </Form>
-        </Card>
-      </Container>
-    </div>
-  );
+
+</div></Row><Button type="submit" fullWidth variant="contained"
+    style={
+        {
+            backgroundColor: "#d00000",
+            color: "#FFF"
+        }
+}>Submit</Button></Form></Card></Container></div>;
 }
 
 export default AddProduct;

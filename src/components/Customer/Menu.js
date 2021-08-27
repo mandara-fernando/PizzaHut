@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import {
   Button,
   ButtonGroup,
@@ -15,7 +16,18 @@ import SingleProduct from "./Main Pages/SingleProduct";
 
 const Menu = () => {
   const [category, setCategoryState] = useState("");
-  // useEffect(() => {}, [category]);
+  const [products, setProduct] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8070/products")
+      .then((res) => {
+        setProduct(res.data);
+      })
+      .catch((err) => {
+        console.log("err=>" + err);
+      });
+  }, [category]);
 
   function openFoodList(cat) {
     console.log(cat);
@@ -55,9 +67,24 @@ const Menu = () => {
                 >
                   Appetizers
                 </Button>
-                <Button className={"category-btn"}>Pastas</Button>
-                <Button className={"category-btn"}>Desserts</Button>
-                <Button className={"category-btn"}>Beverages</Button>
+                <Button
+                  className={"category-btn"}
+                  onClick={() => openFoodList("Pastas")}
+                >
+                  Pastas
+                </Button>
+                <Button
+                  className={"category-btn"}
+                  onClick={() => openFoodList("Desserts")}
+                >
+                  Desserts
+                </Button>
+                <Button
+                  className={"category-btn"}
+                  onClick={() => openFoodList("Beverages")}
+                >
+                  Beverages
+                </Button>
               </ButtonGroup>
             </Card.Body>
           </Card>
@@ -67,11 +94,15 @@ const Menu = () => {
             <h1 className="food-titles">Any</h1>
             <hr className="food-divide" />
             <Grid container spacing={3}>
-              <Grid item xs={4}>
-                <Paper>
-                  <SingleProduct />
-                </Paper>
-              </Grid>
+              {products.map((product, index) => {
+                return (
+                  <Grid item xs={4}>
+                    <Paper>
+                      <SingleProduct product={product} />
+                    </Paper>
+                  </Grid>
+                );
+              })}
             </Grid>
           </div>
           <div
@@ -79,6 +110,23 @@ const Menu = () => {
           >
             <h1 className="food-titles">Pizza</h1>
             <hr className="food-divide" />
+            <Grid container spacing={3}>
+              {products
+                .filter((product) => {
+                  if (product.status == "Pizza") {
+                    return product;
+                  }
+                })
+                .map((product, index) => {
+                  return (
+                    <Grid item xs={4}>
+                      <Paper>
+                        <SingleProduct product={product} />
+                      </Paper>
+                    </Grid>
+                  );
+                })}
+            </Grid>
           </div>
           <div
             className={`tab-content ${
@@ -87,6 +135,94 @@ const Menu = () => {
           >
             <h1 className="food-titles">Appetizers</h1>
             <hr className="food-divide" />
+            <Grid container spacing={3}>
+              {products
+                .filter((product) => {
+                  if (product.status == "Appetizers") {
+                    return product;
+                  }
+                })
+                .map((product, index) => {
+                  return (
+                    <Grid item xs={4}>
+                      <Paper>
+                        <SingleProduct product={product} />
+                      </Paper>
+                    </Grid>
+                  );
+                })}
+            </Grid>
+          </div>
+          <div
+            className={`tab-content ${category === "Pastas" ? "active" : ""}`}
+          >
+            <h1 className="food-titles">Pastas</h1>
+            <hr className="food-divide" />
+            <Grid container spacing={3}>
+              {products
+                .filter((product) => {
+                  if (product.status == "Pastas") {
+                    return product;
+                  }
+                })
+                .map((product, index) => {
+                  return (
+                    <Grid item xs={4}>
+                      <Paper>
+                        <SingleProduct product={product} />
+                      </Paper>
+                    </Grid>
+                  );
+                })}
+            </Grid>
+          </div>
+          <div
+            className={`tab-content ${category === "Desserts" ? "active" : ""}`}
+          >
+            <h1 className="food-titles">Desserts</h1>
+            <hr className="food-divide" />
+            <Grid container spacing={3}>
+              {products
+                .filter((product) => {
+                  if (product.status == "Desserts") {
+                    return product;
+                  }
+                })
+                .map((product, index) => {
+                  return (
+                    <Grid item xs={4}>
+                      <Paper>
+                        <SingleProduct product={product} />
+                      </Paper>
+                    </Grid>
+                  );
+                })}
+            </Grid>
+          </div>
+          <div
+            className={`tab-content ${
+              category === "Beverages" ? "active" : ""
+            }`}
+          >
+            <h1 className="food-titles">Beverages</h1>
+            <hr className="food-divide" />
+            <Grid container spacing={3}>
+              {products
+                .filter((product) => {
+                  if (product.status == "Beverages") {
+                    return product;
+                  }
+                })
+                .map((product, index) => {
+                  return (
+                    <Grid item xs={4}>
+                      <Paper>
+                        <SingleProduct product={product} />
+                      </Paper>
+                    </Grid>
+                  );
+                })}
+            </Grid>
           </div>
         </Col>
       </Row>

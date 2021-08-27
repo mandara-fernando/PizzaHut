@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 import Select from "react-select";
 import {
   Button,
@@ -14,7 +16,18 @@ import { Modal, Form, ToggleButton } from "react-bootstrap";
 
 const SingleProduct = (props) => {
   const [model, setModelView] = useState(false);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
+  const [price, setPrice] = useState(0);
+  const [size, setSize] = useState("");
+
+  const history = useHistory();
+
+  const options = [
+    { value: "Small", label: "Small" },
+    { value: "Medium", label: "Medium" },
+    { value: "large", label: "Large" },
+    { value: "Regular", label: "Regular" },
+  ];
 
   function increamentCount() {
     setCount(count + 1);
@@ -26,6 +39,68 @@ const SingleProduct = (props) => {
   }
   const handleClose = () => setModelView(false);
   const handleShow = () => setModelView(true);
+
+  function addToCart() {
+    const cartItem = {
+      qty: count,
+      id: props.product._id,
+      price: price,
+      title: props.product.title,
+      size: size,
+    };
+
+    axios
+      .get(`http://localhost:8070/carts/${props.product._id}`)
+      .then((res) => {
+        const Item = res.data;
+        return Item;
+      })
+      .then((Item) => {
+        if (Item != null) {
+          const newCartItem = {
+            qty: count,
+          };
+          axios
+            .patch(
+              `http://localhost:8070/carts/update/${props.product._id}`,
+              newCartItem
+            )
+            .then((res) => {
+              console.log(res);
+              alert("product successfully added to the cart");
+            });
+        } else {
+          axios
+            .post(`http://localhost:8070/carts/add`, cartItem)
+            .then((res) => {
+              console.log(res);
+              alert("product successfully added to the cart");
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      });
+    setModelView(false);
+  }
+
+  function selectSize(e) {
+    const value = e.value;
+    if (value == "Small") {
+      setPrice(props.product.prices.small);
+      setSize("small");
+    } else if (value == "Medium") {
+      setPrice(props.product.prices.medium);
+      setSize("medium");
+    } else if (value == "Large") {
+      setPrice(props.product.prices.large);
+      setSize("large");
+    } else {
+      setPrice(props.product.prices.regular);
+      setSize("regular");
+    }
+  }
+
   return (
     <div>
       <Card>
@@ -34,19 +109,19 @@ const SingleProduct = (props) => {
           component="img"
           height="190"
           image=""
+          src={`http://localhost:3000/images/${props.product.image}`}
           title="Contemplative Reptile"
         />
         <CardContent>
           <Typography gutterBottom component="h2">
-            Lizard
+            {props.product.title}
           </Typography>
           <Typography
             style={{ fontSize: "12px" }}
             color="textSecondary"
             component="p"
           >
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
+            {props.product.description}
           </Typography>
           <Typography
             style={{ fontSize: "11px", textAlign: "end" }}
@@ -55,7 +130,7 @@ const SingleProduct = (props) => {
           >
             Starting From :{" "}
             <Typography color="textPrimary" component="span">
-              Rs. 2000
+              {props.product.prices.regular}
             </Typography>
           </Typography>
         </CardContent>
@@ -88,9 +163,9 @@ const SingleProduct = (props) => {
           <Form.Group>
             {" "}
             <Select
-            // value={selectedOption}
-            // onChange={this.handleChange}
-            // options={options}
+              // value={selectedOption}
+              onChange={selectSize}
+              options={options}
             />
           </Form.Group>
           <div className={"d-flex justify-content-center pt-3"}>
@@ -129,7 +204,7 @@ const SingleProduct = (props) => {
             variant="primary"
             startIcon={<MdAddShoppingCart />}
             type={"submit"}
-            // onClick={handleClose}
+            onClick={addToCart}
             style={{ backgroundColor: "#e13340", color: "white" }}
           >
             Add
