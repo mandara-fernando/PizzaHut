@@ -23,7 +23,7 @@ router.get('/', controller.getProducts);
 
 
 // Update products details
-router.patch('/edit/:id', controller.updateProductsDetails);
+router.patch('/edit/:id',upload.single('file'), controller.updateProductsDetails);
 
 
 // Remove a products

@@ -42,11 +42,17 @@ const getProducts = async (req, res) => {
 // update products details
 
 const updateProductsDetails = async (req, res) => {
-
+  console.log('Im Here')
     if (req.params.id) {
         const product = await Product.findById(req.params.id);
+        console.log(req.body)
+
+        if(req.file!=null){
+            product.image=req.file.originalname;
+        }
         if (req.body.title != null) {
             product.title = req.body.title;
+            console.log(product.title)
         }
         if (req.body.description != null) {
             product.description = req.body.description;
@@ -54,19 +60,22 @@ const updateProductsDetails = async (req, res) => {
         if (req.body.status != null) {
             product.status = req.body.status;
         }
-        if (req.body.prices != null) {
-            if (req.body.prices.small != null) {
-                product.prices.small = req.body.prices.small;
-            }
-            if (req.body.prices.medium != null) {
-                product.prices.medium = req.body.prices.medium;
-            }
-            if (req.body.prices.large != null) {
-                product.prices.large = req.body.prices.large;
-            }
+        if (req.body.small != null) {
+            product.prices.small = req.body.small;
+        }
+        if (req.body.medium != null) {
+            product.prices.medium = req.body.medium;
+            console.log('sddsd')
+        }
+        if (req.body.large != null) {
+            product.prices.large = req.body.large;
+        }
+        if (req.body.large != null) {
+            product.prices.regular = req.body.regular;
         }
         try {
             const updatedProduct = await product.save();
+            console.log((updatedProduct))
             res.status(200).json(updatedProduct);
 
         } catch (err) {
