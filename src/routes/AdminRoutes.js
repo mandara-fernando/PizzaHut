@@ -21,8 +21,6 @@ import ViewMoreDetails from "../components/Administration/User Management/ViewRe
 import ContactUsers from "../components/Administration/User Management/ContactUser";
 import Payments from "../components/Administration/Payment Management/Payments";
 
-
-
 function AdminRoutes(props) {
   return (
     <>
@@ -47,7 +45,7 @@ function AdminRoutes(props) {
 
       <Route path="/admin/add-product" component={AddProduct} />
       <Route path="/admin/view-products" component={ViewProducts} />
-      <Route path="/admin/update-product" component={UpdateProduct} />
+      <Route path="/admin/update-product/:id" component={UpdateProduct} />
 
       <Route path="/admin/add-promo" component={AddPromotion} />
       <Route path="/admin/view-promos" component={ViewPromotions} />

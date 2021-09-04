@@ -1,18 +1,16 @@
-.btn-add {
-    width: 200px;
-    margin-left: 1200px;
+.nodata-text{
+    text-transform:uppercase;
+    font-weight: 800;
+    letter-spacing:1pt;
+    color: #747474;
+    font-size: 30px;
+    padding-top: 10px;
 }
+.nodata-sub-text{
+    text-transform:uppercase;
+    font-weight: 700;
+    letter-spacing:1pt;
+    color: #747474;
+    font-size: 15px;
 
-.drop{
-    margin-right: 1100px;
 }
-
-.btn-edit{
-    width: 60px;
-}
-
-.btn-delete{
-    width: 70px;
-    
-}
-
