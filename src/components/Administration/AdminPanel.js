@@ -7,6 +7,7 @@ function AdminPanel(props) {
   const [active, setActive] = useState(false);
   return (
     <div>
+
       <AdminSideBar
         onCollapse={(active) => {
           console.log(active);

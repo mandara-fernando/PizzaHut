@@ -2,8 +2,8 @@ import axios from "axios";
 import React, { Component } from "react";
 import { Card, Container } from "react-bootstrap";
 import { Paper } from "@material-ui/core";
-
 import { Link } from "react-router-dom";
+
 class ViewRecords extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +13,7 @@ class ViewRecords extends Component {
       LastName: "",
       Email: "",
       Role: "",
+      Branch:"",
       Contact: "",
       Profile: "",
     };
@@ -20,7 +21,7 @@ class ViewRecords extends Component {
   componentDidMount() {
     const id = this.props.match.params.id;
     axios
-      .get(`http://localhost:8070/api/user-management/display/${id}`)
+      .get(`http://localhost:8070/user-management/display/${id}`)
       .then((response) => {
         console.log(response.data.UserManagement.Profile);
         this.setState({
@@ -28,6 +29,7 @@ class ViewRecords extends Component {
           LastName: response.data.UserManagement.LastName,
           Email: response.data.UserManagement.Email,
           Role: response.data.UserManagement.Role,
+          Branch: response.data.UserManagement.Branch,
           Contact: response.data.UserManagement.Contact,
           Profile: response.data.UserManagement.Profile,
         });
@@ -109,8 +111,18 @@ class ViewRecords extends Component {
                         </div>
                         <p>{this.state.Role}</p>
                       </div>
-
-   
+                      { this.state.Role != "Admin" &&
+                      <div class='input-group mb-3' style={{ width: "600px" }}>
+                        <div style={{ width: "300px", marginRight: "100;" }}>
+                          <span>
+                            <p style={{ float: "left", marginLeft: "80px" }}>
+                              Branch<span style={{ color: "red" }}>&#42;:</span>
+                            </p>
+                          </span>
+                        </div>
+                        <p>{this.state.Branch}</p>
+                      </div>
+                      }
                       <div class='input-group mb-3' style={{ width: "600px" }}>
                         <div style={{ width: "300px" }}>
                           <span>
@@ -126,7 +138,7 @@ class ViewRecords extends Component {
                   </div>
                 </div>
               </Card.Text><br/><br/>
-              <Link to={"/admin/view-users"}>
+              <Link to={"/admin/um/view-users"}>
                         Back to Home
             </Link>
 

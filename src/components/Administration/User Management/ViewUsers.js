@@ -1,10 +1,10 @@
-import React, { useState,useEffect } from "react";
+import React, {useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Avatar, Button, IconButton, Tooltip } from "@material-ui/core";
-import Modal from "./Modal";
+// import Modal from "./Modal";
 import "../../../stylesheets/formTitle.css";
 import axios from "axios";
-
+import { Modal, Form, ToggleButton } from "react-bootstrap";
 import { Card, Container, Table } from "react-bootstrap";
 import {
   FaEdit,
@@ -16,17 +16,20 @@ import {
 
 
 function ViewUsers(props) {
-  
+
+  const [model, setModelView] = useState(false);
   const [Users, setUsers] = useState([]);
-  
   const [showPop, setShowPop] = useState(false);
   const openPop = () => {
     setShowPop((prev) => !prev);
   };
 
+    const handleClose = () => setModelView(false);
+  const handleShow = () => setModelView(true);
+
 useEffect(() => {
   axios
-  .get("http://localhost:8070/api/user-management/display")
+  .get("http://localhost:8070/user-management/display")
   .then((response) => {
     setUsers( response.data );
 
@@ -37,7 +40,15 @@ useEffect(() => {
   });
 },[]);
   
-
+function onDelete(id){
+  axios.delete(`http://localhost:8070/user-management/delete/${id}`).then(response =>{
+    window.location.href="/admin/um/view-users"
+  })
+  .catch(function(err){
+      console.log(err);
+  })
+ 
+}
 
   return (
     <div>
@@ -60,9 +71,10 @@ useEffect(() => {
                   <th className={"table-data"}>Profile</th>
                   <th className={"table-data"}>User Name</th>
                   <th className={"table-data"}>Role</th>
+                  <th className={"table-data"}>Branch</th>
                   <th>
                     <Tooltip title="Add" placement="top">
-                      <IconButton aria-label="delete" href={"/admin/add-user"}>
+                      <IconButton aria-label="delete" href={"/admin/um/add-user"}>
                         <IoMdAddCircleOutline color={"white"} />
                       </IconButton>
                     </Tooltip>
@@ -88,6 +100,7 @@ useEffect(() => {
                   </td>
                   <td className={"table-data"}>{data.FirstName}</td>
                   <td className={"table-data"}>{data.Role}</td>
+                  <td className={"table-data"}>{data.Branch}</td>
                   <td>
                     {" "}
                     <Tooltip
@@ -97,7 +110,7 @@ useEffect(() => {
                         color: "red",
                       }}
                     >
-                      <Link to={`/admin/update-user/${data._id}`}>
+                      <Link to={`/admin/um/update-user/${data._id}`}>
                         <FaEdit color={"white"} />
                       </Link>
                     </Tooltip>
@@ -109,7 +122,8 @@ useEffect(() => {
                         color: "red",
                       }}
                     >
-                      <Link to={`/admin/update-user/${data._id}`}>
+                      <Link type="submit" onClick={handleShow} >
+                 
                         <FaTrash color={"white"} />
                       </Link>
                     </Tooltip>
@@ -122,7 +136,7 @@ useEffect(() => {
                         color: "red",
                       }}
                     >
-                      <Link to={`/admin/view-user-details/${data._id}`}>
+                      <Link to={`/admin/um/view-user-details/${data._id}`}>
                         <FaEye color={"white"} />
                       </Link>
                     </Tooltip>
@@ -134,7 +148,7 @@ useEffect(() => {
                         color: "red",
                       }}
                     >
-                      <Link to={`/admin/contact-user/${data._id}`}>
+                      <Link to={`/admin/um/contact-user/${data._id}`}>
                         <MdEmail color={"white"} />
                       </Link>
                     </Tooltip>
@@ -147,6 +161,46 @@ useEffect(() => {
           </div>
         </Card>
       </Container>
+
+
+
+
+
+
+
+      <Modal show={model} onHide={handleClose} animation={true}>
+        <Modal.Header className={"d-flex justify-content-center"}>
+          <Modal.Title>Delete</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Label> When you delete this user, all user details are removed. User
+                  does not allow to login to the system.</Form.Label>
+        </Modal.Body>
+        <Modal.Footer className={"d-flex justify-content-center"}>
+          <Button
+            variant="primary"
+            // startIcon={<MdAddShoppingCart />}
+            type={"submit"}
+            onClick={onDelete}
+            style={{ backgroundColor: "#e13340", color: "white" }}
+          >
+            Delete
+          </Button>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
+
+
+
+
+
+
+
+
     </div>
   );
 }

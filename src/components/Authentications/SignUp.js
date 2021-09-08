@@ -1,7 +1,11 @@
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 import React, { useState } from "react";
 import axios from "axios";
 import { Button } from "@material-ui/core";
 import { Card, Container, Form, Col, Row } from "react-bootstrap";;
+
+
 
 function SignUp() {
 
@@ -25,14 +29,30 @@ function SignUp() {
             CPassword
         }
 
+console.log(data);
+
         axios
-        .post("http://localhost:8070/api/auth/signing", data)
+        .post("http://localhost:8070/auth/register", data)
         .then((response) => {
-       
-        
+
+        if(response.data.Success){
+            NotificationManager.success('success',response.data.Success, 3000);
+            setTimeout(function() { 
+                window.location.href="/login"
+          }.bind(this), 2000)
+
+
+        }else{
+            if(response.data.errorMessage){
+                NotificationManager.warning('Warning', response.data.errorMessage, 3000);
+            }
+        }
+  
          })
-        .catch((err) => {
-          console.log(err);
+        .catch((err) => { 
+           
+            NotificationManager.warning('Warning', err.data, 3000);
+        
         });
     }
 
@@ -40,14 +60,14 @@ function SignUp() {
   return (
     <div>
             <Container className={"pt-3"}>
-
+            <NotificationContainer/>
                 <Card className={"p-5 mb-3"}>
                     <div className ="text-center mb-2">
                         <h1 className="form-titles ">Sign UP</h1>
                         <hr className="divide"/>
                     </div>
 
-                  <Form>
+       
 
                     <Row className="mb-3">
                         <Form.Group as={Col} controlId="formGridFname">
@@ -95,7 +115,7 @@ function SignUp() {
                     </Row>
                     
                     <Button
-                            onClick={Signing}
+                    onClick={Signing}
                             type="submit"
                             fullWidth
                             variant="contained"
@@ -105,9 +125,9 @@ function SignUp() {
                             Submit
                         </Button><br/><br/>
 
-                        <a href="/css/default.asp">Have an account Login here?</a>
+                        <a href="/login">Have an account Login here?</a>
 
-                    </Form>
+                   
                 </Card>
             </Container>
         </div>

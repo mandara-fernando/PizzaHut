@@ -1,20 +1,41 @@
 import "./App.css";
 import axios from "axios";
-import MainRoutes from "./routes/mainRoutes";
 import AllNav from "./components/AllNav";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import AdminSideBar from "./components/Administration/Admin Navigation/AdminSideBar";
-import AdminRoutes from "./routes/AdminRoutes";
-import UserRoutes from "./routes/UserRoutes";
+import React, { useEffect, useState } from "react";
 
+import { BrowserRouter as Router} from "react-router-dom";
 axios.defaults.withCredentials = true;
 
 function App() {
+
+  const [isLoading, setLoading] = useState(true);
+  function fakeRequest() {
+    return new Promise(resolve => setTimeout(() => resolve(), 800));
+  }
+
+  useEffect(() => {
+    fakeRequest().then(() => {
+      const el = document.querySelector(".loader-container");
+      if (el) {
+        el.remove();
+        setLoading(!isLoading);
+      }
+    });
+  }, []);
+
+  if (isLoading) {
+    return null;
+  }
+
+
   return (
+    
     <div>
       <Router>
         <AllNav />
       </Router>
+
+
     </div>
   );
 }
