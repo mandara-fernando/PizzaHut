@@ -4,6 +4,8 @@ import { Button } from "@material-ui/core";
 import { Card, Container, Form, Table } from "react-bootstrap";
 import "../../../stylesheets/formTitle.css";
 import "../../../stylesheets/AddUser.css";
+import {  ImExit } from "react-icons/all";
+import { Link } from "react-router-dom";
 
 function AddUser(props) {
   const [imgPreview, setimgPreview] = useState(null);
@@ -16,6 +18,7 @@ function AddUser(props) {
   const [Contact, setContact] = useState("");
   const [Password, setPassword] = useState("");
   const [Role, setRole] = useState("");
+  const [Branch, setBranch] = useState("");
   const [Profile, setProfile] = useState("");
 
 
@@ -41,6 +44,18 @@ function AddUser(props) {
 
 
   function sendData(e) {
+
+    console.log(
+      FirstName,
+      LastName,
+      Email,
+      Contact,
+      Password,
+      Role,
+      Branch,
+      Profile
+    );
+
     e.preventDefault();
 
     const formData = new FormData();
@@ -50,12 +65,18 @@ function AddUser(props) {
     formData.append("Contact", Contact);
     formData.append("Password", Password);
     formData.append("Role", Role);
+    formData.append("Branch", Branch);
     formData.append("Profile", Profile);
 
+
+
+
+
     axios
-      .post("http://localhost:8070/api/user-management", formData)
+      .post("http://localhost:8070/user-management/add", formData)
       .then((response) => {
-      
+        window.location.href="/admin/um/view-users"
+        
       })
       .catch((err) => {
         alert(err);
@@ -70,6 +91,11 @@ function AddUser(props) {
     <div>
       <Container className={"pt-3"}>
         <Card className={"p-5 mb-3"}>
+        <div className={"go-back-icon"}>
+            <Link to={"/admin/um/view-users"}>
+              <ImExit color={"black"} />
+            </Link>
+          </div>
           <div className="text-center mb-2">
             <h1 className="form-titles ">ADD USER</h1>
             <hr className="divide" />
@@ -120,11 +146,35 @@ function AddUser(props) {
                         setRole(e.target.value);
                       }}
               >
-                <option selected>Select the category</option>
+                <option selected>Select Role</option>
                 <option value="Admin">Admin</option>
+                <option value="BranchManager">Branch Manager</option>
+                <option value="ProductManager">Product Manager</option>
                 <option value="DeliveryManager">Delivery Manager</option>
               </select>
             </div>
+            
+            {Role !="Admin" && 
+            <div className="form-group">
+              <Form.Label>Branch</Form.Label>
+              <select
+                class="form-select form-select-lg mb-3 dropdown "
+                aria-label=".form-select-lg example"
+                onChange={(e) => {
+                  setBranch(e.target.value);
+                      }}
+              >
+                <option selected>Select Branch</option>
+                <option value="Any">Any</option>
+                <option value="Colombo">Colombo</option>
+                <option value="Kandy">Kandy</option>
+                <option value="Galle">Galle</option>
+                <option value="Kurunegala">Kurunegala</option>
+              </select>
+            </div>
+
+            }
+
             <Form.Group className="mb-3" controlId="Contact">
               <Form.Label>Contact Number</Form.Label>
               <Form.Control

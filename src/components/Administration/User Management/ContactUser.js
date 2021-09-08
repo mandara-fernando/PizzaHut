@@ -7,20 +7,27 @@ import "../../../stylesheets/AddUser.css";
 import { Card, Container } from "react-bootstrap";
 import { Button } from "@material-ui/core";
 import {Form } from "react-bootstrap";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
+import { GiRollingEnergy, ImExit } from "react-icons/all";
+
+
+
 export default class ViewMoreData extends Component {
   constructor(props) {
     super(props);
     this.state = {
       Email: "",
+      Message: "",
     };
     this.sendEmail = this.sendEmail.bind(this);
     this.handleChange = this.handleChange.bind(this);
-  }
 
+  }
   componentDidMount() {
     const id = this.props.match.params.id;
     axios
-      .get(`http://localhost:8070/api/user-management/display/${id}`)
+      .get(`http://localhost:8070/user-management/display/${id}`)
       .then((response) => {
         console.log(response.data.UserManagement.FirstName);
         this.setState({
@@ -49,23 +56,44 @@ export default class ViewMoreData extends Component {
       )
       .then(
         (result) => {
-  
-          window.location.href="/admin/view-users"
+          this.setState({
+            Message:"success",
+          });
+
         },
         (error) => {
-          console.log(error.text);
+          this.setState({
+            Message:"warning",
+          });
+        
         }
       );
   }
 
-  render() {
-    return (
 
+
+
+render() {
+    
+if(this.state.Message == "success"){
+  NotificationManager.success('Success', 'sent it out');
+  setTimeout(function() { 
+    window.location.href="/admin/um/view-users"
+}.bind(this), 3000)
+}else if(this.state.Message == "warning"){
+  NotificationManager.warning('Error', 'check details again', 3000);
+}
   
-  
-           <Container className={"pt-3"}>
-  <Card className={"p-5 mb-3"}>
+  return (
+  <Container className={"pt-3"}>
+  <NotificationContainer/>
+       <Card className={"p-5 mb-3"}>
           <Card.Header>
+          <div className={"go-back-icon"}>
+            <Link to={"/admin/um/view-users"}>
+              <ImExit color={"black"} />
+            </Link>
+          </div>
           <div className="text-center mb-2">
             <h1 className="form-titles ">Email</h1>
             <hr className="divide" />

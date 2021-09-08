@@ -97,8 +97,7 @@ function Modal({ showPop, setShowPop }) {
               <ModalContent>
                 <h1>Delete User</h1>
                 <p>
-                  When you delete this user, all user details are removed. User
-                  dose not allow to login to the system.
+            
                 </p>
                 <button>Delete</button>
                 <button>Cancle</button>

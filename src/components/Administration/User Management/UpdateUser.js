@@ -18,17 +18,19 @@ function UpdateUser(props) {
   const [Email, setEmail] = useState("");
   const [Contact, setContact] = useState("");
   const [Role, setRole] = useState("");
+  const [Branch, setBranch] = useState("");
   const [Profile, setProfile] = useState("");
 
   useEffect(() => {
     axios
-    .get(`http://localhost:8070/api/user-management/display/${id}`)
+    .get(`http://localhost:8070/user-management/display/${id}`)
     .then((response) => {
       setFirstName(response.data.UserManagement.FirstName)
       setLastName(response.data.UserManagement.LastName)
       setEmail(response.data.UserManagement.Email)
       setContact(response.data.UserManagement.Contact)
       setRole(response.data.UserManagement.Role)
+      setBranch(response.data.UserManagement.Branch)
       setProfile(response.data.UserManagement.Profile)
     })
     .catch(function (err) {
@@ -72,9 +74,10 @@ console.log(formData);
 
 
     axios
-      .put(`http://localhost:8070/api/user-management/updates/${id}`, formData)
+      .put(`http://localhost:8070/user-management/updates/${id}`, formData)
       .then((response) => {
-        console.log("Success");
+        window.location.href="/admin/em/view-users"
+
       })
       .catch((err) => {
         alert(err);
@@ -92,7 +95,7 @@ console.log(formData);
       <Container className={"pt-3"}>
         <Card className={"p-5 "}>
           <div className={"go-back-icon"}>
-            <Link to={"/admin/view-users"}>
+            <Link to={"/admin/um/view-users"}>
               <ImExit color={"black"} />
             </Link>
           </div>
@@ -169,9 +172,30 @@ console.log(formData);
               >
                 <option selected>Select</option>
                 <option value="Admin">Admin</option>
-                <option value="ProductManage">Product Manage</option>
+                <option value="BranchManager">Branch Manager</option>
               </select>
             </div>
+
+            {Role !="Admin" &&    
+            <div className="form-group">
+              <Form.Label>Branch</Form.Label>
+              <select
+                className="form-select form-select-lg mb-3 dropdown"
+                aria-label=".form-select-lg example"
+                value={Branch}
+                onChange={(e) => {
+                        setBranch(e.target.value);
+                      }}
+              >
+                <option selected>Select</option>
+                <option value="Colombo">Colombo</option>
+                <option value="Kandy">Kandy</option>
+                <option value="Galle">Galle</option>
+                <option value="Kurunegala">Kurunegala</option>
+              </select>
+            </div>
+           
+          }
             <Form.Group className="mb-3" controlId="Contact">
               <Form.Label>Contact Number</Form.Label>
               <Form.Control

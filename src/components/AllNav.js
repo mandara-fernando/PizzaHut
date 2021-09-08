@@ -6,7 +6,7 @@ import CustomerDashboard from "./Customer/CustomerDashboard";
 function AllNav() {
   const role = localStorage.getItem("user");
 
-  if ("Admin" === "Admin") {
+  if (role === "Admin" || role === "BranchManager" || role === "DeliveryManager") {
     return <AdminPanel />;
   } else {
     return <CustomerDashboard />;

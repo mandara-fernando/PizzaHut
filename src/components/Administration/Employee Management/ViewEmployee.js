@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, Container, Table } from "react-bootstrap";
 import { Avatar, IconButton, Tooltip } from "@material-ui/core";
+import axios from "axios";
 import {
   FaEdit,
   FaEye,
@@ -10,7 +11,44 @@ import {
   MdEmail,
 } from "react-icons/all";
 
+
+
+
+
 function ViewEmployee(props) {
+
+  const Branch = localStorage.getItem("branch");
+  const [Employee, setEmployee] = useState([]);
+  const [showPop, setShowPop] = useState(false);
+  const openPop = () => {
+    setShowPop((prev) => !prev);
+  };
+
+useEffect(() => {
+  axios
+  .get(`http://localhost:8070/employee-management/display/${Branch}`)
+  .then((response) => {
+    setEmployee( response.data );
+
+    console.log(response.data);
+  })
+  .catch(function (err) {
+    console.log(err);
+  });
+},[]);
+  
+
+function onDeleteEm(id){
+  axios.delete(`http://localhost:8070/employee-management/delete/${id}`).then(response =>{
+    window.location.href="/admin/em/view-employees"
+
+  })
+  .catch(function(err){
+      console.log(err);
+  })
+  
+}
+
   return (
     <div>
       <Container className={"pt-3"}>
@@ -30,16 +68,15 @@ function ViewEmployee(props) {
             >
               <thead>
                 <tr>
-                  <th className={"table-data"}>Employee ID</th>
-                  <th className={"table-data"}>Profile</th>
+                  <th className={"table-data"}>Email</th>
                   <th className={"table-data"}>Full Name</th>
                   <th className={"table-data"}>Role</th>
-                  <th className={"table-data"}>Phone</th>
+                  <th className={"table-data"}>Branch</th>
                   <th>
                     <Tooltip title="Add" placement="top">
                       <IconButton
                         aria-label="delete"
-                        href={"/admin/add-employee"}
+                        href={"/admin/em/add-employee"}
                       >
                         <IoMdAddCircleOutline color={"white"} />
                       </IconButton>
@@ -48,18 +85,13 @@ function ViewEmployee(props) {
                 </tr>
               </thead>
               <tbody>
+              {
+                Employee.map((data, key) => (
                 <tr>
-                  <td className={"table-data"}>E101</td>
-                  <td className={"table-data"}>
-                    <Avatar
-                      alt="Remy Sharp"
-                      src="/static/images/avatar/1.jpg"
-                      className={"table-avatar"}
-                    />
-                  </td>
-                  <td className={"table-data"}>Sandaruwan</td>
-                  <td className={"table-data"}>Delivery Agent</td>
-                  <td className={"table-data"}>0776243213</td>
+                  <td className={"table-data"}>{data.Email}</td>
+                  <td className={"table-data"}>{data.FirstName}</td>
+                  <td className={"table-data"}>{data.Role}</td>
+                  <td className={"table-data"}>{data.Branch}</td>
                   <td>
                     {" "}
                     <Tooltip
@@ -69,21 +101,27 @@ function ViewEmployee(props) {
                         color: "red",
                       }}
                     >
-                      <Link to={"/admin/update-user"}>
+                      <Link to={`/admin/em/update-employee/${data._id}`}>
                         <FaEdit color={"white"} />
                       </Link>
                     </Tooltip>
-                    <Tooltip title="Delete">
-                      <FaTrash className="table-icon" />
+
+                    <Tooltip
+                      title="Delete"
+                      className="table-icon"
+                      style={{
+                        color: "red",
+                      }}
+                    >
+                      <Link       type="submit" onClick={()=>onDeleteEm(data._id)} >
+                        <FaTrash color={"white"} />
+                      </Link>
                     </Tooltip>
-                    <Tooltip title="View">
-                      <FaEye className="table-icon" />
-                    </Tooltip>
-                    <Tooltip title="Contact">
-                      <MdEmail className="table-icon" href={"/"} />
-                    </Tooltip>
+
+
                   </td>
                 </tr>
+                ))}
               </tbody>
             </Table>
           </div>

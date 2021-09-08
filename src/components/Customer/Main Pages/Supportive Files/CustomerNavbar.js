@@ -25,6 +25,8 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import { ShoppingCart } from "@material-ui/icons";
+import { Link } from 'react-router-dom';
+
 
 function CustomerNavbar(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -48,19 +50,25 @@ function CustomerNavbar(props) {
 }, [6]);
   function Logout() {
     axios
-      .get("http://localhost:8070/auth/logout")
-      .then((response) => {
-        localStorage.removeItem("user");
-        localStorage.removeItem("userid");
-        localStorage.removeItem("icon_id");
+    .get("http://localhost:8070/auth/logout")
+    .then((response) => {
+      localStorage.removeItem("user");
+      localStorage.removeItem("userid");
+      localStorage.removeItem("icon_id");
 
-        window.location.href = "/";
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+      window.location.href = "/";
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  } 
 
+
+
+
+  const role = localStorage.getItem("user");
+
+  if (role) {
   return (
     <div>
       <Navbar
@@ -71,7 +79,7 @@ function CustomerNavbar(props) {
         bg={"dark"}
       >
         <Container fluid={"lg"}>
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href="/">
             <img src={"Pizza.png"} height={30} width={110} alt={""} />{" "}
           </Navbar.Brand>
           <Nav className="me-auto" style={{ maxHeight: "100px" }} navbarScroll>
@@ -148,6 +156,86 @@ function CustomerNavbar(props) {
       </Navbar>
     </div>
   );
+}else{
+
+
+  return (
+    <div>
+      <Navbar
+        collapseOnSelect
+        className={"customer-nav "}
+        expand={"lg"}
+        variant={"dark"}
+        bg={"dark"}
+      >
+        <Container fluid={"lg"}>
+          <Navbar.Brand href="/">
+            <img src={"Pizza.png"} height={30} width={110} alt={""} />{" "}
+          </Navbar.Brand>
+          <Nav className="me-auto" style={{ maxHeight: "100px" }} navbarScroll>
+            <Button
+              className="deliver-button m-0"
+              startIcon={<IoLocationSharp className={"deliver-icon"} />}
+            >
+              <div>
+                <span
+                  className={"d-block  text-deliver "}
+                  style={{
+                    fontSize: 13,
+                    fontWeight: "lighter",
+                    color: "#dedede",
+                  }}
+                >
+                  {" "}
+                  Deliver to
+                </span>
+                <span className={"d-block text-deliver p-0 m-0"}> My Home</span>
+              </div>
+            </Button>
+          </Nav>
+
+          <Form className="d-flex me-auto ">
+            <FormControl
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              className={"bar"}
+            />
+
+            <Button
+              className={"search-button"}
+              startIcon={<IoSearchOutline style={{ color: "white" }} />}
+            />
+          </Form>
+
+          <div>
+
+          <Link to="/login">
+              <div>
+                <span
+                  className={"d-block  text-deliver "}
+                  style={{
+                    fontSize: 13,
+                    fontWeight: "lighter",
+                    color: "#dedede",
+                  }}
+                >
+                  {" "}
+                  Login
+                </span>
+              </div>
+            </Link>
+          </div>
+        </Container>
+      </Navbar>
+    </div>
+  );
+
+
+
+
+  
+}
 }
 
 export default CustomerNavbar;
