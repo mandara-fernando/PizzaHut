@@ -1,7 +1,7 @@
 const mongoose=require('mongoose');
 const schema=mongoose.schema;
 
-const UserManagementSchema = new mongoose.Schema({
+const EmployeeManagementSchema = new mongoose.Schema({
 
 FirstName:{
     type:String,
@@ -17,14 +17,10 @@ Email:{
     required: true
 },
 Contact:{
-    type:Number,
-    required: true
-},
-Role:{
     type:String,
     required: true
 },
-Branch:{
+Role:{
     type:String,
     required: true
 },
@@ -32,11 +28,11 @@ PasswordHash:{
     type:String,
     required: true
     },
-Profile:{
+Branch:{
     type:String,
      required: false
 }
 },{ timestamps: true });
 
-const UserManagement = mongoose.model("User Management",UserManagementSchema);
-module.exports=UserManagement;
+const EmployeeManagement = mongoose.model("Employee Management",EmployeeManagementSchema);
+module.exports=EmployeeManagement;

@@ -5,50 +5,43 @@ const { v4: uuidv4 } = require('uuid');
 let path = require('path');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const UserManagement=require("../../../models/UserManagementModel");
-const AuthenticationModel = require("../../../models/AuthenticationModel");
+const UserManagement=require("../../models/UserManagementModel");
+const AuthenticationModel = require("../../models/AuthenticationModel");
 
-//Save inserted photo in the folder
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        //save location
-        cb(null, '../Frontend/data/UserManagement');
-    },
-    filename: function(req, file, cb) {   
-        cb(null, uuidv4() + '-' + Date.now() + path.extname(file.originalname));
-    }
-});
 
-//filter photo type
-const fileFilter = (req, file, cb) => {
-    const allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-    if(allowedFileTypes.includes(file.mimetype)) {
-        cb(null, true);
-    } else {
-        cb(null, false);
-    }
-}
 
-let upload = multer({ storage, fileFilter });
 
-router.route('/').post(upload.single('Identity'),async (req, res) => {
+const AddUser = async (req, res) => {
 
    var FirstName =req.body.FirstName;
    var LastName =req.body.LastName;
    var Email =req.body.Email;
    var Contact = req.body.Contact;
    var Role =req.body.Role;
+   var Branch =req.body.Branch;
    var Password =req.body.Password;
-   var Identity = req.file.filename;
-    var userType = Role;
-    
-   if(!FirstName || !LastName ||!Email || !Contact ||!Password ||!Identity)
+   var Profile = req.file.filename;
+   var Address= ' ';
+   
+   console.log(
+    FirstName,
+    LastName,
+    Email,
+    Contact,
+    Password,
+    Role,
+    Branch,
+    Profile
+  );
+
+   if(!FirstName || !LastName ||!Email || !Contact ||!Password ||!Profile || !Role || !Branch)
     return res
     .status(400)
     .json({errorMessage: "Please enter all required fields"});
 
     const salt = await bcrypt.genSalt();
-    const passwordHash= await bcrypt.hash(Password, salt);
+    const PasswordHash= await bcrypt.hash(Password, salt);
+
 
     const UserManage= new  UserManagement({
         FirstName,
@@ -56,15 +49,16 @@ router.route('/').post(upload.single('Identity'),async (req, res) => {
         Email,
         Contact,
         Role,
-        passwordHash,
-        Identity
+        Branch,
+        PasswordHash,
+        Profile
     });
 
     await UserManage.save().then(()=>{
         const newUser = new AuthenticationModel({
-            Email,userType, passwordHash
+            FirstName,LastName, Email,Contact, Address,Role,Branch, PasswordHash
         });
-            const saveUser =  newUser.save();
+            const saveUser = newUser.save();
                 const token=jwt.sign({
                     user:saveUser._id
                 }, process.env.JWT_SECRET);
@@ -78,9 +72,11 @@ router.route('/').post(upload.single('Identity'),async (req, res) => {
         console.log("User adding error");
         console.log(err);
     });
-});
+}
 
-router.get('/display',async (req,res)=>{
+
+
+const DisplayUser = async (req, res) => {
     await UserManagement.find().then((UserManagement) => {
         if (UserManagement) {
             res.json(UserManagement); 
@@ -90,9 +86,12 @@ router.get('/display',async (req,res)=>{
     }).catch((err)=>{
         console.log(err);
     });
-});
+};
 
-router.route('/display/:id').get(async (req, res) => {
+
+
+
+const getOneUser = async (req, res) => {
     
     const _id =  req.params.id;
 
@@ -106,9 +105,12 @@ router.route('/display/:id').get(async (req, res) => {
     }).catch((err)=>{
         console.log(err);
     });
-});
+};
 
-router.route('/updates/:id').put(async (req, res) => {
+
+
+
+const UpdateUser = async  (req, res) => {
     
     const _id = req.params.id;
     var FirstName =req.body.FirstName;
@@ -124,7 +126,7 @@ router.route('/updates/:id').put(async (req, res) => {
         Contact,
         Role
     }
-    const update  = UserManagement.findByIdAndUpdate(_id,data)
+    const update  = await UserManagement.findByIdAndUpdate(_id,data)
         .then(() => {
             console.log("Updated");
     res.status(200).send({status:"updated", user:update});
@@ -132,5 +134,46 @@ router.route('/updates/:id').put(async (req, res) => {
         console.log(err);
         res.status(500).send({status:"Update Error"});
    });
-});
-module.exports=router;
+};
+
+
+
+
+const DeleteUser =  async (req, res) => {
+    const _id = req.params.id;
+    await UserManagement.findByIdAndDelete(_id).then((sellers) => {
+            res.json({
+                status:"Success"
+            })
+    }).catch((err)=>{
+        console.log(err);
+    });
+
+};
+
+
+
+
+
+const ContactUser = async (req, res) => {    
+    const _id =  req.params.id;
+    await UserManagement.findById(_id, (err, UserManagement) => {
+        return res.status(200).json({
+            success:true,
+            UserManagement
+        });
+    }).catch((err)=>{
+        console.log(err);
+    });
+};
+
+
+
+module.exports = {
+    AddUser,
+    DisplayUser,
+    getOneUser,
+    UpdateUser,
+    DeleteUser,
+    ContactUser
+}
