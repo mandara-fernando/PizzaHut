@@ -47,7 +47,7 @@ function UpdateEmployee(props) {
     };
 
     console.log(data);
-
+    /*update employees by id*/
     axios
       .put(`http://localhost:8070/employee-management/updates/${id}`, data)
       .then((response) => {
