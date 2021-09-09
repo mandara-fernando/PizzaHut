@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const EmployeeManagement=require("../../models/EmployeeManagement");
 const AuthenticationModel = require("../../models/AuthenticationModel");
 
+//add employee controller
 const addEmployee = async (req, res) => {
 
    var FirstName =req.body.FirstName;
