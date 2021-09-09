@@ -342,7 +342,7 @@ function AdminSideBar(props) {
                   <AiFillCaretUp />
                 </span>
               </a>
-              <div className="dropdown-container-open">
+              <div className="dropdown-container">
                 <a href={"/admin/em/view-employees"} className="list-item">
                   <span className="sub-icon">
                     <FaEye className="ic" />
