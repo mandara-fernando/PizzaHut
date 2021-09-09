@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, Container, Table } from "react-bootstrap";
 import { Avatar, IconButton, Tooltip } from "@material-ui/core";
@@ -11,43 +11,37 @@ import {
   MdEmail,
 } from "react-icons/all";
 
-
-
-
-
 function ViewEmployee(props) {
-
   const Branch = localStorage.getItem("branch");
   const [Employee, setEmployee] = useState([]);
   const [showPop, setShowPop] = useState(false);
   const openPop = () => {
     setShowPop((prev) => !prev);
   };
+  //View eployees
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8070/employee-management/display/${Branch}`)
+      .then((response) => {
+        setEmployee(response.data);
 
-useEffect(() => {
-  axios
-  .get(`http://localhost:8070/employee-management/display/${Branch}`)
-  .then((response) => {
-    setEmployee( response.data );
+        console.log(response.data);
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }, []);
 
-    console.log(response.data);
-  })
-  .catch(function (err) {
-    console.log(err);
-  });
-},[]);
-  
-
-function onDeleteEm(id){
-  axios.delete(`http://localhost:8070/employee-management/delete/${id}`).then(response =>{
-    window.location.href="/admin/em/view-employees"
-
-  })
-  .catch(function(err){
-      console.log(err);
-  })
-  
-}
+  function onDeleteEm(id) {
+    axios
+      .delete(`http://localhost:8070/employee-management/delete/${id}`)
+      .then((response) => {
+        window.location.href = "/admin/em/view-employees";
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  }
 
   return (
     <div>
@@ -85,42 +79,41 @@ function onDeleteEm(id){
                 </tr>
               </thead>
               <tbody>
-              {
-                Employee.map((data, key) => (
-                <tr>
-                  <td className={"table-data"}>{data.Email}</td>
-                  <td className={"table-data"}>{data.FirstName}</td>
-                  <td className={"table-data"}>{data.Role}</td>
-                  <td className={"table-data"}>{data.Branch}</td>
-                  <td>
-                    {" "}
-                    <Tooltip
-                      title="Edit"
-                      className="table-icon"
-                      style={{
-                        color: "red",
-                      }}
-                    >
-                      <Link to={`/admin/em/update-employee/${data._id}`}>
-                        <FaEdit color={"white"} />
-                      </Link>
-                    </Tooltip>
-
-                    <Tooltip
-                      title="Delete"
-                      className="table-icon"
-                      style={{
-                        color: "red",
-                      }}
-                    >
-                      <Link       type="submit" onClick={()=>onDeleteEm(data._id)} >
-                        <FaTrash color={"white"} />
-                      </Link>
-                    </Tooltip>
-
-
-                  </td>
-                </tr>
+                {Employee.map((data, key) => (
+                  <tr>
+                    <td className={"table-data"}>{data.Email}</td>
+                    <td className={"table-data"}>{data.FirstName}</td>
+                    <td className={"table-data"}>{data.Role}</td>
+                    <td className={"table-data"}>{data.Branch}</td>
+                    <td>
+                      {" "}
+                      <Tooltip
+                        title="Edit"
+                        className="table-icon"
+                        style={{
+                          color: "red",
+                        }}
+                      >
+                        <Link to={`/admin/em/update-employee/${data._id}`}>
+                          <FaEdit color={"white"} />
+                        </Link>
+                      </Tooltip>
+                      <Tooltip
+                        title="Delete"
+                        className="table-icon"
+                        style={{
+                          color: "red",
+                        }}
+                      >
+                        <Link
+                          type="submit"
+                          onClick={() => onDeleteEm(data._id)}
+                        >
+                          <FaTrash color={"white"} />
+                        </Link>
+                      </Tooltip>
+                    </td>
+                  </tr>
                 ))}
               </tbody>
             </Table>
