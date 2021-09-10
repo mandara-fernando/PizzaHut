@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Card, Container, Form, Row, Col,Dropdown } from "react-bootstrap";
 import "../../../stylesheets/Orders.css";
 
+
+//Payment Management Page
 function Payments(props) {
   return <main >
         
@@ -20,7 +22,6 @@ function Payments(props) {
                           placeholder="Search for customers"
                       />
                                
-                  
                       <Dropdown  className="drop" >
                           <Dropdown.Toggle variant="success" id="dropdown-basic">
                               FILTER
@@ -34,10 +35,7 @@ function Payments(props) {
                       </Dropdown>
                       
                       <br/>
-                  
-                  
-    
-
+                    
   <table class='table'>
     <thead class='thead-dark'>
       <tr class='table-success'>
@@ -54,7 +52,6 @@ function Payments(props) {
       
         <tr>
           <td>
-          
           </td>
           <td></td>
           <td style={{ paddingTop: "30px" }}>
@@ -67,15 +64,13 @@ function Payments(props) {
           
           </td>
           <td>
-              
-          
+            
           </td>
           <td>
           
           </td>
 
         </tr>
-     
     </tbody>
   </table>
 
