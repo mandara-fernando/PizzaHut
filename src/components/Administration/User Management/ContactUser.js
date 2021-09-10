@@ -25,6 +25,7 @@ export default class ViewMoreData extends Component {
 
   }
   componentDidMount() {
+    //get user ID from main page
     const id = this.props.match.params.id;
     axios
       .get(`http://localhost:8070/user-management/display/${id}`)
