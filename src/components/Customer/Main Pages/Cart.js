@@ -36,7 +36,7 @@ function Cart(props) {
             console.log("err=>" + err);
         });
     }
-
+//This function is to update the product qty of product in the cart 
     function increamentCount(p) {
         const qty = p.qty + 1;
         const product = {
