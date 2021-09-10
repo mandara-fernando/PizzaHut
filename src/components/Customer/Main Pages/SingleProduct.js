@@ -33,6 +33,8 @@ const SingleProduct = (props) => {
   function increamentCount() {
     setCount(count + 1);
   }
+  
+  //This function is use to decrement the count variable
   function decreamentCount() {
     if (count > 0) {
       setCount(count - 1);
