@@ -24,7 +24,7 @@ function AddEmployee() {
       Role,
       Branch,
     };
-    /*Add employees to the system*/
+    /*Add new employees to the system*/
     axios
       .post("http://localhost:8070/employee-management/add", data)
       .then((response) => {
