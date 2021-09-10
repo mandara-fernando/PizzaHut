@@ -25,7 +25,7 @@ function ViewEmployee(props) {
       .then((response) => {
         setEmployee(response.data);
 
-        console.log(response.data);
+        console.log(response.data); //data will display in the console
       })
       .catch(function (err) {
         console.log(err);
