@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+
+//Logout Function
 function Logout(props) {
 
     axios
@@ -14,6 +16,5 @@ function Logout(props) {
       .catch((err) => {
         console.log(err);
       });
-
 }
 export default Logout;
