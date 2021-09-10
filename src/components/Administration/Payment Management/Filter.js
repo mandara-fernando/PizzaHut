@@ -1,5 +1,7 @@
 import React from "react";
 import "../../../stylesheets/paymentManagement.css"
+
+//Payment filter method
 function Filter(props) {
   return (
     <div class="area">
