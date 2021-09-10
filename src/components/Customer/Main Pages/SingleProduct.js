@@ -42,6 +42,7 @@ const SingleProduct = (props) => {
   const handleClose = () => setModelView(false);
   const handleShow = () => setModelView(true);
 
+  //This function get purticular user responses and add product to the cart using Cart API
   function addToCart() {
     const cartItem = {
       qty: count,
