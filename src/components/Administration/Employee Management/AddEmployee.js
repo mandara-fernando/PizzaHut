@@ -14,7 +14,7 @@ function AddEmployee() {
 
   function sendData(e) {
     e.preventDefault();
-    //emplyee data
+    //emplyees data
     const data = {
       FirstName,
       LastName,
