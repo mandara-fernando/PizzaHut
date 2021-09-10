@@ -51,7 +51,7 @@ function Cart(props) {
             console.log(err);
         })
     }
-
+//This function use to get total amount of cost of the cart items
     function getTotal() {
         let total = 0;
         products.map(product => {
