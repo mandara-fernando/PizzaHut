@@ -9,7 +9,6 @@ import { Card, Container, Form, Col, Row } from "react-bootstrap";;
 
 function SignUp() {
 
-
     const [FirstName, setFirstName] = useState("");
     const [LastName, setLastName] = useState("");
     const [Email, setEmail] = useState("");
@@ -34,14 +33,14 @@ console.log(data);
         axios
         .post("http://localhost:8070/auth/register", data)
         .then((response) => {
-
+        //success Login
         if(response.data.Success){
             NotificationManager.success('success',response.data.Success, 3000);
             setTimeout(function() { 
                 window.location.href="/login"
           }.bind(this), 2000)
 
-
+        //Error Login
         }else{
             if(response.data.errorMessage){
                 NotificationManager.warning('Warning', response.data.errorMessage, 3000);
@@ -50,12 +49,10 @@ console.log(data);
   
          })
         .catch((err) => { 
-           
             NotificationManager.warning('Warning', err.data, 3000);
         
         });
     }
-
 
   return (
     <div>
@@ -66,8 +63,6 @@ console.log(data);
                         <h1 className="form-titles ">Sign UP</h1>
                         <hr className="divide"/>
                     </div>
-
-       
 
                     <Row className="mb-3">
                         <Form.Group as={Col} controlId="formGridFname">
@@ -126,7 +121,6 @@ console.log(data);
                         </Button><br/><br/>
 
                         <a href="/login">Have an account Login here?</a>
-
                    
                 </Card>
             </Container>
