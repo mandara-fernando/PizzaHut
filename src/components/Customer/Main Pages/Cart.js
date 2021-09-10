@@ -24,7 +24,7 @@ function Cart(props) {
         });
     }, [6]);
 
-
+//remove products using product id
     const removeProduct = (product) => {
         axios.delete(`http://localhost:8070/carts/delete/${
             product._id
