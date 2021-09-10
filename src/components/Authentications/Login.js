@@ -12,6 +12,7 @@ import {
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 
+//Login function
 function Login() {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
@@ -24,8 +25,6 @@ function Login() {
       Email,
       Password,
     };
-
-    console.log(Email, Password);
 
     axios
       .post("http://localhost:8070/auth/login", data)
