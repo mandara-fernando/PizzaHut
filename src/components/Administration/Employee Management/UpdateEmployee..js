@@ -36,7 +36,9 @@ function UpdateEmployee(props) {
 
   function sendData(e) {
     e.preventDefault();
-
+ 
+    //Employee data
+    
     const data = {
       FirstName,
       LastName,
