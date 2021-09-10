@@ -10,10 +10,15 @@ function UserRoutes() {
   return (
     <>
       <Route path="/home" component={Home} />
+
       <Route path="/menu" component={Menu} />
+        
       <Route path="/cart" component={Cart} />
+        
       <Route path="/payment" component={Payment} />
+        
       <Route path="/login" component={login} />
+        
       <Route path="/signUp" component={SignUp} />
     </>
   );
