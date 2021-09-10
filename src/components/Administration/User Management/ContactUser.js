@@ -12,7 +12,7 @@ import 'react-notifications/lib/notifications.css';
 import { GiRollingEnergy, ImExit } from "react-icons/all";
 
 
-
+//Email JS Messaging System
 export default class ViewMoreData extends Component {
   constructor(props) {
     super(props);
