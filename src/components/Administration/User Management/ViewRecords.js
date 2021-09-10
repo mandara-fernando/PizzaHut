@@ -4,6 +4,7 @@ import { Card, Container } from "react-bootstrap";
 import { Paper } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
+//EmailJs added to the system
 class ViewRecords extends Component {
   constructor(props) {
     super(props);
