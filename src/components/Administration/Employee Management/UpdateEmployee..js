@@ -16,7 +16,7 @@ function UpdateEmployee(props) {
 
   console.log(id);
 
-  /*get employees*/
+  /*get all employees*/
   useEffect(() => {
     axios
       .get(`http://localhost:8070/employee-management/getid/${id}`)
