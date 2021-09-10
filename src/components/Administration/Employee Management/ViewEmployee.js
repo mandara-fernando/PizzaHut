@@ -28,7 +28,7 @@ function ViewEmployee(props) {
         console.log(response.data); //data will display in the console
       })
       .catch(function (err) {
-        console.log(err);
+        console.log(err); //Error message display
       });
   }, []);
 
