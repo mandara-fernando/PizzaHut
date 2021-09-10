@@ -32,7 +32,7 @@ function ViewEmployee(props) {
       });
   }, []);
 
-  //Delete employees
+  //Delete selected employee by id
   function onDeleteEm(id) {
     axios
       .delete(`http://localhost:8070/employee-management/delete/${id}`)
