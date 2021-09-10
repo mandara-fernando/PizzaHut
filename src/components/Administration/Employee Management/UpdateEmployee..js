@@ -30,7 +30,7 @@ function UpdateEmployee(props) {
         setBranch(response.data.UserManagement.Branch);
       })
       .catch(function (err) {
-        console.log(err);
+        console.log(err); //error message print in console
       });
   }, []);
 
