@@ -21,7 +21,7 @@ const Menu = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8070/products")
+      .get("http://localhost:8070/products")//retrieve all the products using api
       .then((res) => {
         setProduct(res.data);
       })
