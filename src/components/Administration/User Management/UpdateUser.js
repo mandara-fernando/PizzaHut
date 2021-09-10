@@ -39,8 +39,7 @@ function UpdateUser(props) {
   },[]);
 
 
-
-
+//Profile imgae handle function
   const handleImageChange = (e) => {
     setError(false);
     const selected = e.target.files[0];
@@ -54,11 +53,11 @@ function UpdateUser(props) {
       reader.readAsDataURL(selected);
     } else {
       setError(true);
-
       alert("file not supported");
     }
   };
 
+  //send data to the backend using Api
   function sendData(e) {
     e.preventDefault();
 
@@ -69,27 +68,17 @@ function UpdateUser(props) {
     formData.append("Contact", Contact);
     formData.append("Role", Role);
     formData.append("Profile", Profile);
-
-console.log(formData);
-
-
+    
     axios
       .put(`http://localhost:8070/user-management/updates/${id}`, formData)
       .then((response) => {
         window.location.href="/admin/em/view-users"
-
       })
       .catch((err) => {
         alert(err);
       });
   }
 
-
-
-
-
-
-  
   return (
     <div>
       <Container className={"pt-3"}>
