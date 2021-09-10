@@ -97,6 +97,7 @@ function AddEmployee() {
                 </select>
               </Form.Group>
             </Row>
+
             <Form.Group controlId="formGridEmail">
               <Form.Label>Phone Number</Form.Label>
               <Form.Control
