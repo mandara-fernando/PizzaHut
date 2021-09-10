@@ -86,7 +86,7 @@ const SingleProduct = (props) => {
       });
     setModelView(false);
   }
-
+//This function is use to set size varibale with user response that come as onclick event
   function selectSize(e) {
     const value = e.value;
     if (value == "Small") {
