@@ -61,6 +61,7 @@ function Cart(props) {
         return total;
     }
 
+    //This function use to update product qty(decrement the count)
     function decreamentCount(p) {
         if (p.qty > 0) {
             const qty = p.qty - 1;
