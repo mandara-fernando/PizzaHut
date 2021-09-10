@@ -40,7 +40,7 @@ function ViewEmployee(props) {
         window.location.href = "/admin/em/view-employees";
       })
       .catch(function (err) {
-        console.log(err);
+        console.log(err); //Error message will display
       });
   }
 
