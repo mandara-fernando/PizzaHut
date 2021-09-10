@@ -21,7 +21,7 @@ const SingleProduct = (props) => {
   const [size, setSize] = useState("");
 
   const history = useHistory();
-
+//these are the options thats are use in the select size dropdown
   const options = [
     { value: "Small", label: "Small" },
     { value: "Medium", label: "Medium" },
