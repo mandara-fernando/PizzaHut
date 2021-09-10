@@ -1,6 +1,15 @@
 
 # 2021S02_REG_WE_43
 
+Contributers: 
+IT19171234
+IT19063492 
+IT19108582 
+IT19053592
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
