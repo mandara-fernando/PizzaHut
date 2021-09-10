@@ -44,6 +44,7 @@ export default class ViewMoreData extends Component {
     });
   };
 
+  //Email JS credientials
   sendEmail(e) {
     e.preventDefault();
 
