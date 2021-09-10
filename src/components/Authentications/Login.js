@@ -29,6 +29,7 @@ function Login() {
     axios
       .post("http://localhost:8070/auth/login", data)
       .then((response) => {
+        //Check user types and display notifications
         if (response.data.users.Role === "Admin") {
           localStorage.setItem("user", "Admin");
           NotificationManager.success("Success", "Login Success");
