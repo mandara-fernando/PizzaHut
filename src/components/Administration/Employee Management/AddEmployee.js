@@ -43,6 +43,7 @@ function AddEmployee() {
             <h1 className="form-titles ">ADD EMPLOYEE</h1>
             <hr className="divide" />
           </div>
+          //Add employee form
           <Form onSubmit={sendData}>
             <Row className="mb-3">
               <Form.Group controlId="formGridEmail">
