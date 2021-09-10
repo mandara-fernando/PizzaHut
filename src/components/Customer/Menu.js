@@ -14,6 +14,7 @@ import { GiHamburgerMenu } from "react-icons/all";
 import { Grid, Paper } from "@material-ui/core";
 import SingleProduct from "./Main Pages/SingleProduct";
 
+//menu function 
 const Menu = () => {
   const [category, setCategoryState] = useState("");
   const [products, setProduct] = useState([]);
@@ -28,7 +29,8 @@ const Menu = () => {
         console.log("err=>" + err);
       });
   }, [category]);
-
+  
+  //This function is to set category when customer click one of the category button
   function openFoodList(cat) {
     console.log(cat);
     setCategoryState(cat);
