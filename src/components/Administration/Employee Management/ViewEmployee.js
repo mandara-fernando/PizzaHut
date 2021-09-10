@@ -18,7 +18,7 @@ function ViewEmployee(props) {
   const openPop = () => {
     setShowPop((prev) => !prev);
   };
-  //View eployees
+  //display all eployees
   useEffect(() => {
     axios
       .get(`http://localhost:8070/employee-management/display/${Branch}`)
