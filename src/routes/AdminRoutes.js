@@ -26,7 +26,7 @@ import Payments from "../components/Administration/Payment Management/Payments";
 function AdminRoutes(props) {
   return (
     <>
-
+//routes thats belongs to the employee management operations
       <Route path="/admin/em/add-employee" component={AddEmployee} />
       <Route path="/admin/em/view-employees" component={ViewEmployee} />
       <Route path="/admin/em/update-employee/:id" component={UpdateEmployee} />
