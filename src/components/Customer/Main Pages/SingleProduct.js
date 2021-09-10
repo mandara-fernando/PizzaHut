@@ -29,6 +29,7 @@ const SingleProduct = (props) => {
     { value: "Regular", label: "Regular" },
   ];
 
+  //This function is use to increment the count variable
   function increamentCount() {
     setCount(count + 1);
   }
