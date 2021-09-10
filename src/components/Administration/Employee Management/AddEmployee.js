@@ -31,7 +31,7 @@ function AddEmployee() {
         window.location.href = "/admin/em/view-employees";
       })
       .catch((err) => {
-        alert(err);
+        alert(err); //alert
       });
   }
 
