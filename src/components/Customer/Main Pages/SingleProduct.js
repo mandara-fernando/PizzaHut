@@ -42,6 +42,7 @@ const SingleProduct = (props) => {
   }
   //This fucntion is use to close the pop up window in menu.js page
   const handleClose = () => setModelView(false);
+  //This function is use to trigger popup window when press add to cart button
   const handleShow = () => setModelView(true);
 
   //This function get purticular user responses and add product to the cart using Cart API
