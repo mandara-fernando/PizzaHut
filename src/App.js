@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 import { BrowserRouter as Router } from "react-router-dom";
 axios.defaults.withCredentials = true;
-
+//Main function
 function App() {
   // Sprinner
   const [isLoading, setLoading] = useState(true);
