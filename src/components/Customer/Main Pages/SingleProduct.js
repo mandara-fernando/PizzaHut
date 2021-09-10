@@ -38,6 +38,7 @@ const SingleProduct = (props) => {
       setCount(count - 1);
     }
   }
+  //This fucntion is use to close the pop up window in menu.js page
   const handleClose = () => setModelView(false);
   const handleShow = () => setModelView(true);
 
