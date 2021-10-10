@@ -2,11 +2,7 @@ const mongoose = require("mongoose");
 const schema = mongoose.schema;
 
 const authentication = new mongoose.Schema({
-  FirstName: {
-    type: String,
-    required: true,
-  },
-  LastName: {
+  UserName: {
     type: String,
     required: true,
   },
@@ -14,26 +10,14 @@ const authentication = new mongoose.Schema({
     type: String,
     required: true,
   },
-  Contact: {
-    type: String,
-    required: true,
-  }, 
-  Address: {
-    type: String,
-    required: false,
-  },
-  Role: {
+  Phone: {
     type: String,
     required: true,
   },
-  Branch:{
-    type:String,
-    required: true
-},
   PasswordHash: {
     type: String,
     required: true,
-  },
+  }
 },{ timestamps: true });
 
 const Authentication = mongoose.model("Authentication", authentication);

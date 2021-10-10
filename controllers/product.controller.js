@@ -4,19 +4,24 @@ const multer = require("multer");
 // Add product
 
 const addProduct = async (req, res) => {
+
+
+
+
+
+
     if (req.body) {
-console.log(req.file.originalname)
+        const image = req.file.originalname;
+
+        const mobileImage = "/assets/images/" + image
+
         const product = new Product({
             title:req.body.title,
             description:req.body.description,
             image:req.file.originalname,
-            prices:{
-                small:req.body.small,
-                medium:req.body.medium,
-                large:req.body.large,
-                regular:req.body.regular
-            },
-            status:req.body.status
+            prices:req.body.price,
+            status:req.body.status,
+            mobileImage:mobileImage
         });
         try {
             const newProduct = await product.save();
@@ -33,6 +38,7 @@ console.log(req.file.originalname)
 const getProducts = async (req, res) => {
     try {
         const products = await Product.find();
+        console.log("PRODUCTS",products);
         res.status(200).json(products);
     } catch (err) {
         res.status(500).json({message: err.message})

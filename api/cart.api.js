@@ -11,7 +11,12 @@ router.patch('/update/:id', controller.updateProductQty);
 // Delete product from cart
 router.delete('/delete/:id', controller.removeFromCart);
 
+
 // Get all cart items
 router.get('/', controller.getAllFromCart);
+
+
+
+
 
 module.exports = router;

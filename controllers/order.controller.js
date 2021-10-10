@@ -1,90 +1,95 @@
-const Order = require('../models/order.model');
+const Order = require('../models/Orders');
+const Cart = require('../models/cart.model');
+const OrderManagement = require('../models/OrderManagement');
+const Address = require('../models/Address');
 
 
-// Add  new order
+const addOrders = async (req, res) => {
 
-const addOrder = async (req, res) => {
-    if (req.body) {
-        const order = new Order(req.body);
+        const BuyerName = req.body.BuyerNames;
+        const phone = req.body.phones;
+        const Street = req.body.Streets;
+        const city = req.body.Cities;
+        const province = req.body.Provinces;
 
         try {
-            const newOrder = await order.save();
-            res.status(200).json(newOrder);
+            const address = new Address({
+                BuyerName,
+                phone,
+                Street,
+                city,
+                province
+            })
+            const newAddress = await address.save()
 
+            if(newAddress){
+
+                let id = newAddress._id;
+                const cartItems = await Cart.find();
+                if(cartItems){
+
+                    const orders = new Order({
+                        Date: new Date(),
+                        order:id,
+                        cartItems:cartItems
+                    });
+
+                    const newOrders = await orders.save();
+                    const removedCartItem = await Cart.remove({});
+
+                    res.status(200).json(newOrders);
+            }
+
+            }else{
+                res.status(200).json(null);
+            }
+            
         } catch (err) {
-            res.status(400).json({message: err.message})
+            res.status(500).json({message: err.message});
+            console.log(err)
         }
-
+      
     }
-}
 
+    const getOrder = async (req, res) => {
 
-// update the order status
-
-const editOrderStatus = async (req, res) => {
-    if (req.params.id) {
-        const order = Order.findById(req.params.id);
-        if (req.body.status) {
-            order.status = req.body.status;
-        }
         try {
-            const updatedOrder = await order.save();
-            res.status(200).json(updatedOrder);
+            const orders = await Order.find();
+            let data=[];
+            if(orders.length >0){
+                orders.map((order,index)=>{
+                    let item = {_id:index,Cart:order.cartItems}
+                        data.push(item)
+                })
+            }
+            res.status(200).json(data);
         } catch (err) {
-            res.status(400).json({message: err.message})
-        }
-
-    }
-}
-
-// assign employee to the order
-
-const assignToOrder = async (req, res) => {
-    if (req.params.id) {
-        const order = Order.findById(req.params.id);
-        if (req.body.assign_to) {
-            order.status = req.body.assign_to;
-        }
-        try {
-            const assignedOrder = await order.save();
-            res.status(200).json(assignedOrder);
-        } catch (err) {
-            res.status(400).json({message: err.message})
-        }
-
-    }
-}
-
-
-// get all orders
-
-const getAllOrders = async (req, res) => {
-    try {
-        const orders = await Order.find({});
-        res.status(200).json(orders)
-    } catch (err) {
-        res.status(500).json({message: err.message})
-    }
-}
-
-
-// filter by status
-
-const filterOrderByStatus = async (req, res) => {
-    if (req.params.status) {
-        try {
-            const order = await Order.find({status: req.params.status});
-            res.status(200).json(order);
-        } catch (err) {
+            console.log(err);
             res.status(500).json({message: err.message})
         }
     }
-}
+    
 
-module.exports={
-    addOrder,
-    editOrderStatus,
-    assignToOrder,
-    getAllOrders,
-    filterOrderByStatus
-}
+
+    const getAllOrders = async (req, res) => {
+        try {
+            const orders = await Order.find().populate('order');
+                    res.status(200).json(orders);
+                
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({message: err.message})
+        }
+    }
+    
+
+
+
+    module.exports = {
+        addOrders,
+        getOrder,
+        getAllOrders
+
+  
+    }
+    

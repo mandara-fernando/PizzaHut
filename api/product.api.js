@@ -5,7 +5,9 @@ const multer=require('multer');
 
 const FileStorage=multer.diskStorage({
     destination:(req,file,callback)=>{
-        callback(null, '../Frontend/public/Profile');
+        callback(null, '../Web/Frontend/public/Profile'),
+        callback(null, '../Web/Frontend/public/assets/images'),
+        callback(null, '../Frontend/assets/images');
     },
     filename:(req,file,callback)=>{
         callback(null,file.originalname);

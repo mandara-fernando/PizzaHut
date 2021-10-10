@@ -1,41 +1,38 @@
 const mongoose = require('mongoose');
 
-const cartSchema = new mongoose.Schema({
+const AddressSchema = new mongoose.Schema({
     
-    itemId:{
+    BuyerName:{
         type: String,
         required: true,
         trim: true
     },
-    itemImage:{
+    phone:{
         type: String,
         required: true,
         trim: true
     },
-    itemTitle: {
+    Street: {
         type: String,
         required: true,
         trim: true
     },
-    menuId: {
+    city: {
         type: String,
         required: true,
         trim: true
     },
-    qty: {
-        type: Number,
+    province: {
+        type: String,
         required: true,
         trim: true
     },
-    price: {
-        type: Number,
-        required: true,
-        trim: true
-    },
-    total: {
-        type: Number,
-        required: true,
-        trim: true
-    },
+    order:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'Orders',
+        required: false,
+}
 });
-module.exports = mongoose.model('cart', cartSchema);
+module.exports = mongoose.model('Address', AddressSchema);
+
+

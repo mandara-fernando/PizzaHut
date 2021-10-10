@@ -16,6 +16,7 @@ app.use(cookieParser());
 
 app.use(cors(
     { 
+       origin:["http:/10.02.2:8081"],
        origin:["http://localhost:3000"],
        credentials: true,
     }
@@ -23,12 +24,11 @@ app.use(cors(
 
 app.use(bodyParser.json());
 
+// const UserManagement=require('./api/UserManagement/UserManagement.api');
+// app.use('/user-management',UserManagement);
 
-const UserManagement=require('./api/UserManagement/UserManagement.api');
-app.use('/user-management',UserManagement);
-
-const EmployeeManagement=require('./api/EmployeeManagement/EmployeeManagement');
-app.use('/employee-management',EmployeeManagement);
+// const EmployeeManagement=require('./api/EmployeeManagement/EmployeeManagement');
+// app.use('/employee-management',EmployeeManagement);
 
 
 const Authentication=require('./api/Authentication/Auth.api');
@@ -36,14 +36,18 @@ app.use('/auth',Authentication);
 
 const productAPI = require('./api/product.api');
 app.use('/products', productAPI);
+
 const cartAPI = require('./api/cart.api');
 app.use('/carts', cartAPI);
-const toppingAPI = require('./api/topping.api');
-app.use('/toppings', toppingAPI);
-const listAPI = require('./api/list.api');
-app.use('/lists', listAPI);
-const orderAPI = require('./api/order.api');
-app.use('/orders', orderAPI);
+
+const OrderAPI = require('./api/Order');
+app.use('/orders', OrderAPI);
+
+
+// const listAPI = require('./api/list.api');
+// app.use('/lists', listAPI);
+// const orderAPI = require('./api/order.api');
+// app.use('/orders', orderAPI);
 
 
 app.listen(PORT,() =>{
